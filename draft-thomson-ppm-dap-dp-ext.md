@@ -19,12 +19,12 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
-category: info
+title: "Distributed Aggregation Protocol (DAP) Extensions for Improved Application of Differential Privacy"
+abbrev: "DAP DP Extensions"
+category: std
 
-docname: draft-todo-yourname-protocol-latest
-submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
+docname: draft-thomson-ppm-dap-dp-ext-latest
+submissiontype: IETF
 number:
 date:
 consensus: true
@@ -32,9 +32,8 @@ v: 3
 area: AREA
 workgroup: WG Working Group
 keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+ - decibels
+ - replay
 venue:
   group: WG
   type: Working Group
