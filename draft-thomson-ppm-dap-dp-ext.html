@@ -2,7 +2,7 @@
 <html lang="en" class="Internet-Draft">
 <head>
 <meta charset="utf-8">
-<meta content="Common,Latin" name="scripts">
+<meta content="Common,Greek,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
 <title>Distributed Aggregation Protocol (DAP) Extensions for Improved Application of Differential Privacy</title>
 <meta content="Martin Thomson" name="author">
@@ -11,7 +11,7 @@
 of a system that provides differentially-private guarantees
 for participants.
 Extensions to DAP are defined to support these guarantees.
-This includes bindings of measurements to specific options,
+This includes bindings of reports to specific options,
 so that the aggregation service can better implement privacy budgeting
 and replay protections. 
     " name="description">
@@ -1070,7 +1070,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 of a system that provides differentially-private guarantees
 for participants.
 Extensions to DAP are defined to support these guarantees.
-This includes bindings of measurements to specific options,
+This includes bindings of reports to specific options,
 so that the aggregation service can better implement privacy budgeting
 and replay protections.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
@@ -1154,12 +1154,20 @@ and replay protections.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-requester-website-identity" class="internal xref">Requester (Website) Identity</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-thread" class="internal xref">Thread</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-report-partition" class="internal xref">Report Partition</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-privacy-budget" class="internal xref">Privacy Budget</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-privacy-budget-consumption" class="internal xref">Privacy Budget Consumption</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-privacy-budget-upload-exten" class="internal xref">Privacy Budget Upload Extension Format</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-privacy-budget-usage" class="internal xref">Privacy Budget Usage</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
@@ -1199,10 +1207,10 @@ can be used as part of a differentially-private system.<a href="#section-1-1" cl
 from participants.
 The basic mechanism that DAP uses to cap contributions is anti-replay.
 Aggregators are responsible for ensuring that
-the same measurement cannot be aggregated more than once.
-An honest participant will contribute a limited number of measurements
+the same report cannot be aggregated more than once.
+An honest participant will contribute a limited number of reports
 and can rely on at least one aggregator
-preventing that measurement from being used multiple times.
+preventing that report from being used multiple times.
 (The threat model does not seek to protect the privacy of a dishonest participant.)<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">This basic anti-replay mechanism allows DAP
 to provide caps on contributions.
@@ -1236,34 +1244,39 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-late-task-binding" class="section-name selfRef">Late Task Binding</a>
       </h2>
 <p id="section-3-1">DAP presently requires that a client be aware of the task that it is contributing to.
-The identity of the task is bound to each measurement
+The identity of the task is bound to each report
 through the inclusion of the task ID in the call to the sharding function
 of the VDAF (<span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vdaf-12#section-5.1" class="relref">Section 5.1</a> of [<a href="#VDAF" class="cite xref">VDAF</a>]</span>).<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">The late-binding extension (codepoint 0xTBD)
-signals to aggregators that a measurement was not bound to a specific task
+<p id="section-3-2">The late_binding upload extension
+(codepoint 0xTBD)
+signals to aggregators that a report was not bound to a specific task
 when it was created.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">Late binding might be useful when measurements are collected by an intermediary,
-where the client that generates the measurement is not aware of
-how the measurement will ultimately be aggregated.
+<p id="section-3-3">Late task binding might be useful
+when reports are collected by an intermediary.
+The client that generates the report in this case
+might be unaware
+of how the report will ultimately be aggregated.
 This allows the intermediary to defer the creation of a task
 until it has determined the necessary parameters for the task.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">When sharding and protecting measurements,
+<p id="section-3-4">When sharding and protecting reports,
 the task ID is replaced with a the fixed, 32-byte sequence of
 b13e8440f1cdb4da51eed3967e0a2652d27f5005bc35f751daf188b4b746708b
-(in hex).
-(This is the output from SHA-256 <span>[<a href="#SHA2" class="cite xref">SHA2</a>]</span>
+(in hex).<a href="#section-3-4" class="pilcrow">¶</a></p>
+<aside id="section-3-5">
+        <p id="section-3-5.1">This is the output from SHA-256 <span>[<a href="#SHA2" class="cite xref">SHA2</a>]</span>
 when passed an ASCII-encoded <span>[<a href="#ASCII" class="cite xref">ASCII</a>]</span> input of
-'no task_id'.)<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">Enforcing anti-replay for a measurement
+'no task_id'.<a href="#section-3-5.1" class="pilcrow">¶</a></p>
+</aside>
+<p id="section-3-6">Enforcing anti-replay for a report
 that is not bound to a specific task
 is challenging.
-An aggregator cannot constrain its search for duplicate measurements
+An aggregator cannot constrain its search for duplicate reports
 to those that were submitted to the task.
 This could greatly increase the cost of meeting anti-replay requirements.
 The intent with this extension is that additional constraints,
 such as one or more of the scoping extensions (see <a href="#scoping" class="auto internal xref">Section 4</a>),
 will be used to make it more feasible
-for an aggregator to comply with anti-replay requirements.<a href="#section-3-5" class="pilcrow">¶</a></p>
+for an aggregator to comply with anti-replay requirements.<a href="#section-3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="scoping">
@@ -1272,63 +1285,209 @@ for an aggregator to comply with anti-replay requirements.<a href="#section-3-5"
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-scoping-extensions" class="section-name selfRef">Scoping Extensions</a>
       </h2>
 <p id="section-4-1">The DAP upload extensions in this section might be used to either
-constrain the use of measurements
+constrain the use of reports
 for tasks that are configured with matching values
-or group measurements for the purposes of detecting duplicates.<a href="#section-4-1" class="pilcrow">¶</a></p>
+or group reports for the purposes of detecting duplicates.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <p id="section-4-2">Including additional scoping information can also
-ensure that measurements do not get reused
+ensure that reports do not get reused
 outside of their intended scope.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">This section defines upload extensions that carry
+requester identity (<a href="#requester" class="auto internal xref">Section 4.1</a>)
+and report partition (<a href="#partition" class="auto internal xref">Section 4.2</a>).<a href="#section-4-3" class="pilcrow">¶</a></p>
 <div id="requester">
 <section id="section-4.1">
         <h3 id="name-requester-website-identity">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-requester-website-identity" class="section-name selfRef">Requester (Website) Identity</a>
         </h3>
-<p id="section-4.1-1">Measurements might be requested by
+<p id="section-4.1-1">Reports might be requested by
 an entity that operates at lower trust level than
-the entity that assembles the measurement.
+the entity that assembles the report.
 The entity at the lower trust level
 might not have access to the information necessary
-to generate the measurement.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.1-2">For example, an application could ask the operating system
-to generate a measurement
+to generate the report.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">The requester_identity upload extension
+(codepoint 0xTBD)
+contains an encoding of the entity
+that requested the report be created.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.1-3">For example, an application could ask the operating system
+to generate a report
 using information that would normally be withheld from it.
-Similarly, a website could ask a web browser to generate a measurement.
+Similarly, a website could ask a web browser to generate a report
+based on otherwise secret information.
 In either case,
-the release of information for measurement
+the release of information for report
 is conditional on it only being used
 by a specific aggregation service
 under terms that have been previously established
 with the aggregators.
-Binding the measurement to the identity of the requester
+Binding the report to the identity of the requester
 ensures that any use of the system can be accounted for
-as coming from that requester.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
-<p id="section-4.1-3">The specific encoding used in this extension
+as coming from that requester.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-4">The specific encoding used in this extension
 will depend on the application.
 However, the use of a globally-unique identifier,
 such as an origin (<span>[<a href="#ORIGIN" class="cite xref">ORIGIN</a>]</span>)
 or serialized site (<span>[<a href="#SITE" class="cite xref">SITE</a>]</span>),
-reduces the odds of name collisions.
+reduces the likelihood of name collisions.
 A name collision might either allow two requesters
 that share an aggregator
-to share and reuse each others measurements
+to share and reuse each others reports
 (or perhaps to marginally increase the odds
-of having measurements spuriously detected duplicates).<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+of having reports spuriously detected duplicates).<a href="#section-4.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="thread">
+<div id="partition">
 <section id="section-4.2">
-        <h3 id="name-thread">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-thread" class="section-name selfRef">Thread</a>
-      </h3>
+        <h3 id="name-report-partition">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-report-partition" class="section-name selfRef">Report Partition</a>
+        </h3>
+<p id="section-4.2-1">This extension allows a client to bind a report
+to an application-defined label.
+This allows applications to partition reports
+and have each partition managed separately.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">The report_partition upload extension
+(codepoint 0xTBD)
+contains an application-defined sequence of bytes.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">The use of this upload extension allows aggregators
+to partition their state for tracking reports.
+Duplicate reports only need to be tracked
+across a matching partition,
+for detecting duplicates within a task
+or for detecting duplicates across tasks.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-4">The selection of partition values might need
+to be coordinated with aggregators.
+If partitions are used by aggregators,
+the amount of state the aggregator tracks
+is increased by the number of partitions.
+This represents an increase in total storage,
+in exchange for reducing the scope
+over which that storage needs to be consistent.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.2-5">An aggregator could constrain the values
+that are accepted for this extension,
+rejecting reports that lack the extension
+or have disallowed values.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="budget">
 <section id="section-5">
-      <h2 id="name-privacy-budget">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-privacy-budget" class="section-name selfRef">Privacy Budget</a>
-    </h2>
+      <h2 id="name-privacy-budget-consumption">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-privacy-budget-consumption" class="section-name selfRef">Privacy Budget Consumption</a>
+      </h2>
+<p id="section-5-1">The gathering of reports can be modeled
+as the expenditure of privacy budget by a client.
+That is, clients treat the creation of a report
+from private information
+as a limited release of information.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">Total privacy loss in this case is determined
+by the combination of two factors:<a href="#section-5-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5-3.1">
+          <p id="section-5-3.1.1">How the report is aggregated.<a href="#section-5-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-3.2">
+          <p id="section-5-3.2.1">How many reports are produced.<a href="#section-5-3.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-5-4">If aggregation includes the application of
+an appropriate differential privacy mechanism
+(that is, added noise;
+see <span>[<a href="#DWORK" class="cite xref">DWORK</a>]</span>,
+<span>[<a href="#DAP-DP" class="cite xref">DAP-DP</a>]</span>,
+and <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-12#section-7.5" class="relref">Section 7.5</a> of [<a href="#DAP" class="cite xref">DAP</a>]</span>),
+the client might rely on an understanding of that mechanism
+to model privacy loss.
+However, such privacy loss might be based on
+an assumption that the client contributes just one report.
+A complete model needs to consider
+the contributions of multiple reports.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">A privacy budgeting system
+provides additional flexibility.
+Privacy loss associated with any task
+(or information release)
+can be adjusted to control the amount of noise that is added.
+A budget might be specified in terms of a metric
+(like the epsilon parameter in (ε, δ)-differential privacy)
+that is expended with each information release.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<p id="section-5-6">In one version of that model,
+a client is responsible for the management of any privacy budget.
+Each report represents a logical information release,
+contingent on being sent for aggregation
+by aggregators that are trusted to apply
+an appropriate differential privacy mechanism
+with the appropriate level of noise.<a href="#section-5-6" class="pilcrow">¶</a></p>
+<div id="privacy-budget-upload-extension-format">
+<section id="section-5.1">
+        <h3 id="name-privacy-budget-upload-exten">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-privacy-budget-upload-exten" class="section-name selfRef">Privacy Budget Upload Extension Format</a>
+        </h3>
+<p id="section-5.1-1">The privacy_budget upload extension
+(codepoint 0xTBD)
+encodes the amount of privacy budget
+that the client considers to be expended
+as a result of producing a report.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">The value of the codepoint is
+an encoding of the number of milli-epsilons
+of budget that are expended,
+using as many bytes as needed to encode the value
+in network byte order.
+Each unit is a one-thousandth of an epsilon (ε) as used in
+(ε, δ)-differential privacy.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<aside id="section-5.1-3">
+          <p id="section-5.1-3.1">Note(1): Where the delta (δ) value is non-zero,
+and small epsilon increments can be expended,
+clients might also need to limit the number of reports
+to prevent the overall delta value from getting large.<a href="#section-5.1-3.1" class="pilcrow">¶</a></p>
+</aside>
+<aside id="section-5.1-4">
+          <p id="section-5.1-4.1">Note(2): A separate upload extension could be defined
+to change the scale of this value
+or switch to a different unit, as necessary.<a href="#section-5.1-4.1" class="pilcrow">¶</a></p>
+</aside>
+</section>
+</div>
+<div id="privacy-budget-usage">
+<section id="section-5.2">
+        <h3 id="name-privacy-budget-usage">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-privacy-budget-usage" class="section-name selfRef">Privacy Budget Usage</a>
+        </h3>
+<p id="section-5.2-1">An aggregator that is configured to apply
+a differential privacy mechanism can operate in one of two modes:
+either one where the privacy budget value is validated
+and reports that contain a small value are rejected;
+or, where the minimum privacy budget value is used
+to determine the parameters for the differential privacy mechanism.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">In the first mode,
+aggregators each validate this parameter
+as part of validating each report.
+The value in the report is compared
+with the value configured for the task.
+A report that contains a value that is
+lower than the value configured for the task
+is the result of a client that expects that
+the aggregators will add more noise
+than the task configuration presently allows.
+Aggregators <span class="bcp14">MUST</span> reject reports with a privacy budget value
+that is smaller than their configured privacy budget.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.2-3">Alternatively,
+aggregators could adjust the parameters
+of the differential privacy mechanism they use
+to match the smallest privacy budget that was
+included in reports.
+For long-running tasks that produce multiple outputs over time,
+it is only necessary to ensure that each output
+contain noise that is based on the minimum budget expenditure
+of the reports that are included in that aggregate.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2-4">This upload extension can be used
+to protect reports that are conveyed from client
+by untrusted entities,
+especially where those entities might be able to choose any task,
+as enabled by the late_binding upload extension (<a href="#late-bind" class="auto internal xref">Section 3</a>).
+This parameter ensures that the entity cannot direct reports
+to a task that has an inadequate differential privacy mechanism.<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="security-considerations">
@@ -1336,7 +1495,15 @@ of having measurements spuriously detected duplicates).<a href="#section-4.1-3" 
       <h2 id="name-security-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-6-1">TODO Security<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">The security considerations relevant to each extension
+is enumerated in the respective sections:
+<a href="#late-bind" class="auto internal xref">Section 3</a>,
+<a href="#requester" class="auto internal xref">Section 4.1</a>,
+<a href="#partition" class="auto internal xref">Section 4.2</a>,
+and <a href="#budget" class="auto internal xref">Section 5</a>.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">Use of DAP is subject to the security considerations
+of DAP (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-12#section-7" class="relref">Section 7</a> of [<a href="#DAP" class="cite xref">DAP</a>]</span>)
+and the VDAF that is in use (<span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vdaf-12#section-9" class="relref">Section 9</a> of [<a href="#VDAF" class="cite xref">VDAF</a>]</span>.<a href="#section-6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -1384,6 +1551,14 @@ in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-12#se
 <dt id="ASCII">[ASCII]</dt>
         <dd>
 <span class="refAuthor">Cerf, V.</span>, <span class="refTitle">"ASCII format for network interchange"</span>, <span class="seriesInfo">STD 80</span>, <span class="seriesInfo">RFC 20</span>, <span class="seriesInfo">DOI 10.17487/RFC0020</span>, <time datetime="1969-10" class="refDate">October 1969</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc20">https://www.rfc-editor.org/rfc/rfc20</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="DAP-DP">[DAP-DP]</dt>
+        <dd>
+<span class="refTitle">"*** BROKEN REFERENCE ***"</span>. </dd>
+<dd class="break"></dd>
+<dt id="DWORK">[DWORK]</dt>
+        <dd>
+<span class="refAuthor">Dwork, C.</span> and <span class="refAuthor">A. Roth</span>, <span class="refTitle">"The Algorithmic Foundations of Differential Privacy"</span>, <span class="refContent">Now Publishers</span>, <span class="seriesInfo">Foundations and Trends® in Theoretical Computer Science vol. 9, no. 3-4, pp. 211-407</span>, <span class="seriesInfo">DOI 10.1561/0400000042</span>, <time datetime="2013" class="refDate">2013</time>, <span>&lt;<a href="https://doi.org/10.1561/0400000042">https://doi.org/10.1561/0400000042</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ORIGIN">[ORIGIN]</dt>
         <dd>
