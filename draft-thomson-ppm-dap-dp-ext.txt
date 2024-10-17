@@ -3,7 +3,7 @@
 
 
 Privacy Preserving Measurement                                M. Thomson
-Internet-Draft                                    Your Organization Here
+Internet-Draft                                                   Mozilla
 Intended status: Standards Track                         17 October 2024
 Expires: 20 April 2025
 
@@ -349,7 +349,12 @@ Table of Contents
               RFC 20, DOI 10.17487/RFC0020, October 1969,
               <https://www.rfc-editor.org/rfc/rfc20>.
 
-   [DAP-DP]   "*** BROKEN REFERENCE ***".
+   [DAP-DP]   Chen, J., McMillan, A., Patton, C., Talwar, K., and S.
+              Wang, "Differential Privacy Mechanisms for DAP", Work in
+              Progress, Internet-Draft, draft-wang-ppm-differential-
+              privacy-00, 23 October 2023,
+              <https://datatracker.ietf.org/doc/html/draft-wang-ppm-
+              differential-privacy-00>.
 
    [DWORK]    Dwork, C. and A. Roth, "The Algorithmic Foundations of
               Differential Privacy", Now Publishers, Foundations and
@@ -390,5 +395,5 @@ Acknowledgments
 Author's Address
 
    Martin Thomson
-   Your Organization Here
+   Mozilla
    Email: mt@lowentropy.net
