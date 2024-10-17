@@ -25,7 +25,7 @@ venue:
 author:
   -
     fullname: "Martin Thomson"
-    organization: Your Organization Here
+    organization: Mozilla
     email: "mt@lowentropy.net"
 
 normative:
