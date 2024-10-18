@@ -4,8 +4,8 @@
 
 Privacy Preserving Measurement                                M. Thomson
 Internet-Draft                                                   Mozilla
-Intended status: Standards Track                         17 October 2024
-Expires: 20 April 2025
+Intended status: Standards Track                         18 October 2024
+Expires: 21 April 2025
 
 
      Distributed Aggregation Protocol (DAP) Extensions for Improved
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 April 2025.
+   This Internet-Draft will expire on 21 April 2025.
 
 Copyright Notice
 
@@ -78,7 +78,7 @@ Table of Contents
      4.1.  Requester (Website) Identity
      4.2.  Report Partition
    5.  Privacy Budget Consumption
-     5.1.  Privacy Budget Upload Extension Format
+     5.1.  Privacy Budget Report Extension Format
      5.2.  Privacy Budget Usage
    6.  Security Considerations
    7.  IANA Considerations
@@ -107,7 +107,7 @@ Table of Contents
    can limit the applicability of the protocol outside of the narrowly-
    defined usage modes in the basic specification.
 
-   This document defines several upload extensions to DAP that either
+   This document defines several report extensions to DAP that either
    enable greater flexibility or help constrain the flexibility allowed
    by other options.
 
@@ -130,7 +130,7 @@ Table of Contents
    through the inclusion of the task ID in the call to the sharding
    function of the VDAF (Section 5.1 of [VDAF]).
 
-   The late_binding upload extension (codepoint 0xTBD) signals to
+   The late_binding report extension (codepoint 0xTBD) signals to
    aggregators that a report was not bound to a specific task when it
    was created.
 
@@ -159,7 +159,7 @@ Table of Contents
 
 4.  Scoping Extensions
 
-   The DAP upload extensions in this section might be used to either
+   The DAP report extensions in this section might be used to either
    constrain the use of reports for tasks that are configured with
    matching values or group reports for the purposes of detecting
    duplicates.
@@ -167,7 +167,7 @@ Table of Contents
    Including additional scoping information can also ensure that reports
    do not get reused outside of their intended scope.
 
-   This section defines upload extensions that carry requester identity
+   This section defines report extensions that carry requester identity
    (Section 4.1) and report partition (Section 4.2).
 
 4.1.  Requester (Website) Identity
@@ -177,7 +177,7 @@ Table of Contents
    lower trust level might not have access to the information necessary
    to generate the report.
 
-   The requester_identity upload extension (codepoint 0xTBD) contains an
+   The requester_identity report extension (codepoint 0xTBD) contains an
    encoding of the entity that requested the report be created.
 
    For example, an application could ask the operating system to
@@ -204,10 +204,10 @@ Table of Contents
    defined label.  This allows applications to partition reports and
    have each partition managed separately.
 
-   The report_partition upload extension (codepoint 0xTBD) contains an
+   The report_partition report extension (codepoint 0xTBD) contains an
    application-defined sequence of bytes.
 
-   The use of this upload extension allows aggregators to partition
+   The use of this report extension allows aggregators to partition
    their state for tracking reports.  Duplicate reports only need to be
    tracked across a matching partition, for detecting duplicates within
    a task or for detecting duplicates across tasks.
@@ -256,9 +256,9 @@ Table of Contents
    aggregators that are trusted to apply an appropriate differential
    privacy mechanism with the appropriate level of noise.
 
-5.1.  Privacy Budget Upload Extension Format
+5.1.  Privacy Budget Report Extension Format
 
-   The privacy_budget upload extension (codepoint 0xTBD) encodes the
+   The privacy_budget report extension (codepoint 0xTBD) encodes the
    amount of privacy budget that the client considers to be expended as
    a result of producing a report.
 
@@ -272,7 +272,7 @@ Table of Contents
       |  limit the number of reports to prevent the overall delta value
       |  from getting large.
 
-      |  Note(2): A separate upload extension could be defined to change
+      |  Note(2): A separate report extension could be defined to change
       |  the scale of this value or switch to a different unit, as
       |  necessary.
 
@@ -301,10 +301,10 @@ Table of Contents
    that each output contain noise that is based on the minimum budget
    expenditure of the reports that are included in that aggregate.
 
-   This upload extension can be used to protect reports that are
+   This report extension can be used to protect reports that are
    conveyed from client by untrusted entities, especially where those
    entities might be able to choose any task, as enabled by the
-   late_binding upload extension (Section 3).  This parameter ensures
+   late_binding report extension (Section 3).  This parameter ensures
    that the entity cannot direct reports to a task that has an
    inadequate differential privacy mechanism.
 
@@ -320,7 +320,7 @@ Table of Contents
 
 7.  IANA Considerations
 
-   Registrations for the defined upload extensions need to be made, but
+   Registrations for the defined report extensions need to be made, but
    this depends on the resolution of the TODO in Section 8.2.2 of [DAP].
 
 8.  References
