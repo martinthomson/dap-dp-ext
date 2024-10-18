@@ -73,7 +73,7 @@ The resulting system is somewhat inflexible,
 which can limit the applicability of the protocol
 outside of the narrowly-defined usage modes in the basic specification.
 
-This document defines several upload extensions to DAP
+This document defines several report extensions to DAP
 that either enable greater flexibility
 or help constrain the flexibility allowed by other options.
 
@@ -95,7 +95,7 @@ The identity of the task is bound to each report
 through the inclusion of the task ID in the call to the sharding function
 of the VDAF ({{Section 5.1 of ?VDAF=I-D.irtf-cfrg-vdaf}}).
 
-The late_binding upload extension
+The late_binding report extension
 (codepoint 0xTBD)
 signals to aggregators that a report was not bound to a specific task
 when it was created.
@@ -132,7 +132,7 @@ for an aggregator to comply with anti-replay requirements.
 
 # Scoping Extensions {#scoping}
 
-The DAP upload extensions in this section might be used to either
+The DAP report extensions in this section might be used to either
 constrain the use of reports
 for tasks that are configured with matching values
 or group reports for the purposes of detecting duplicates.
@@ -141,7 +141,7 @@ Including additional scoping information can also
 ensure that reports do not get reused
 outside of their intended scope.
 
-This section defines upload extensions that carry
+This section defines report extensions that carry
 requester identity ({{requester}})
 and report partition ({{partition}}).
 
@@ -155,7 +155,7 @@ The entity at the lower trust level
 might not have access to the information necessary
 to generate the report.
 
-The requester_identity upload extension
+The requester_identity report extension
 (codepoint 0xTBD)
 contains an encoding of the entity
 that requested the report be created.
@@ -195,11 +195,11 @@ to an application-defined label.
 This allows applications to partition reports
 and have each partition managed separately.
 
-The report_partition upload extension
+The report_partition report extension
 (codepoint 0xTBD)
 contains an application-defined sequence of bytes.
 
-The use of this upload extension allows aggregators
+The use of this report extension allows aggregators
 to partition their state for tracking reports.
 Duplicate reports only need to be tracked
 across a matching partition,
@@ -267,9 +267,9 @@ an appropriate differential privacy mechanism
 with the appropriate level of noise.
 
 
-## Privacy Budget Upload Extension Format
+## Privacy Budget Report Extension Format
 
-The privacy_budget upload extension
+The privacy_budget report extension
 (codepoint 0xTBD)
 encodes the amount of privacy budget
 that the client considers to be expended
@@ -290,7 +290,7 @@ Each unit is a one-thousandth of an epsilon (ε) as used in
 > to prevent the overall delta value from getting large.
 
 {:aside}
-> Note(2): A separate upload extension could be defined
+> Note(2): A separate report extension could be defined
 > to change the scale of this value
 > or switch to a different unit, as necessary.
 
@@ -327,11 +327,11 @@ it is only necessary to ensure that each output
 contain noise that is based on the minimum budget expenditure
 of the reports that are included in that aggregate.
 
-This upload extension can be used
+This report extension can be used
 to protect reports that are conveyed from client
 by untrusted entities,
 especially where those entities might be able to choose any task,
-as enabled by the late_binding upload extension ({{late-bind}}).
+as enabled by the late_binding report extension ({{late-bind}}).
 This parameter ensures that the entity cannot direct reports
 to a task that has an inadequate differential privacy mechanism.
 
@@ -353,7 +353,7 @@ and the VDAF that is in use ({{Section 9 of VDAF}}.
 
 # IANA Considerations
 
-Registrations for the defined upload extensions need to be made,
+Registrations for the defined report extensions need to be made,
 but this depends on the resolution of the TODO
 in {{Section 8.2.2 of DAP}}.
 
