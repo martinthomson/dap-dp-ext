@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-17T01:20:57.848729+00:00",
+  "timestamp": "2024-10-20T01:27:23.205908+00:00",
   "repo": "martinthomson/dap-dp-ext",
   "labels": [
     {
@@ -49,6 +49,156 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDONA6MD86auYwj",
+      "title": "Security considerations for late task binding",
+      "url": "https://github.com/martinthomson/dap-dp-ext/issues/1",
+      "state": "OPEN",
+      "author": "cjpatton",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I just wanted to flag a VDAF security consideration relevant to late task binding: [draft-irtf-cfrg-vdaf, Section 9.1](https://cfrg.github.io/draft-irtf-cfrg-vdaf/draft-irtf-cfrg-vdaf.html#section-9.1). Basically we can use any protocol we want to choose the verification key; in fact, we can even let the attacker choose it. The honest Aggregator just needs to make sure that key doesn't change during the lifetime of the task. Otherwise, if the attacker can choose the key adaptively based on the reports its seen so far, it may be able to pick a key that results in the VDAF execution leaking some bits of a measurement.\r\n\r\nThis is totally doable even with late task binding, but it may be useful to be more concrete about how the verification key is chosen. In the taskprov extension, for example, we recommend using a [pre-shared key](https://ietf-wg-ppm.github.io/draft-ietf-ppm-dap-taskprov/draft-ietf-ppm-dap-taskprov.html#section-4.3).",
+      "createdAt": "2024-10-17T22:08:59Z",
+      "updatedAt": "2024-10-18T14:53:32Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "OWNER",
+          "body": "Maybe I'm not following, but I don't see why this would affect this work.  The text you cite from VDAF recommends choosing a verification key that is bound to the task ID by producing the task ID as (for instance) something like `H(verification_key || something)`.  Late binding won't change whether clients know the task ID or verification key if that is followed; it reduces it because the client doesn't know which task will be used.  If your point is that there is no commitment to a task, so that a report could be used in any task, that's true, but it is still the case that the verification key needs to be kept from clients.\r\n\r\nThat a verification key might be leaked by an aggregator in a way that would then allow clients to evade validation seems like a pretty serious bug to me.  Doesn't the threat model allow one aggregator to collude with clients?",
+          "createdAt": "2024-10-18T04:47:22Z",
+          "updatedAt": "2024-10-18T04:47:22Z"
+        },
+        {
+          "author": "cjpatton",
+          "authorAssociation": "NONE",
+          "body": "> Maybe I'm not following, but I don't see why this would affect this work. The text you cite from VDAF recommends choosing a verification key that is bound to the task ID by producing the task ID as (for instance) something like `H(verification_key || something)`. Late binding won't change whether clients know the task ID or verification key if that is followed; it reduces it because the client doesn't know which task will be used. If your point is that there is no commitment to a task, so that a report could be used in any task, that's true, but it is still the case that the verification key needs to be kept from clients.\r\n\r\nConcretely, it would be a problem if the DAP leader had a bunch of reports, then picked the verification key to use to verify them. To prevent this, the aggregators need to pick this key before reports begin to arrive.\r\n\r\n\r\n> That a verification key might be leaked by an aggregator in a way that would then allow clients to evade validation seems like a pretty serious bug to me. Doesn't the threat model allow one aggregator to collude with clients?\r\n\r\n[We have different threat models for privacy and robustness](https://cfrg.github.io/draft-irtf-cfrg-vdaf/draft-irtf-cfrg-vdaf.html#section-9-1).\r\n\r\n",
+          "createdAt": "2024-10-18T14:53:30Z",
+          "updatedAt": "2024-10-18T14:53:30Z"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "I_kwDONA6MD86aubh5",
+      "title": "nit: Rename \"upload extension\" to \"report extension\"",
+      "url": "https://github.com/martinthomson/dap-dp-ext/issues/2",
+      "state": "CLOSED",
+      "author": "cjpatton",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "See https://github.com/ietf-wg-ppm/draft-ietf-ppm-dap/pull/613.",
+      "createdAt": "2024-10-17T22:16:10Z",
+      "updatedAt": "2024-10-18T05:02:44Z",
+      "closedAt": "2024-10-18T05:02:44Z",
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "OWNER",
+          "body": "Ugh, you moved the goalposts.  Fine.",
+          "createdAt": "2024-10-18T04:47:58Z",
+          "updatedAt": "2024-10-18T04:47:58Z"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "I_kwDONA6MD86auf4S",
+      "title": "Report Partition and DAP batches",
+      "url": "https://github.com/martinthomson/dap-dp-ext/issues/3",
+      "state": "OPEN",
+      "author": "cjpatton",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Is the intent of \"Report Partition\" to ensure that reports are only aggregated together if they share the same label? If so, you may want to define a [batch mode](https://ietf-wg-ppm.github.io/draft-ietf-ppm-dap/draft-ietf-ppm-dap.html#section-4.2) for DAP. The idea of a batch mode is that it's supposed to dictate how reports can be partitioned into batches. For instance, you may want that the collector specifies the label or labels it wants to aggregate on.\r\n\r\nFWIW, [Mastic may provide the functionality you want](https://jimouris.github.io/draft-mouris-cfrg-mastic/draft-mouris-cfrg-mastic.html#section-1-6.2.1). It has the added value of not revealing to the aggregators which reports have which labels. However, the communication cost might be prohibitively high, depending on the metrics you want to aggregate.",
+      "createdAt": "2024-10-17T22:29:10Z",
+      "updatedAt": "2024-10-18T14:55:20Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "OWNER",
+          "body": "The use case might need fleshing out some, but this is just about allowing reports to be segregated for anti-replay and tracking purposes.\r\n\r\nIt comes most in handy when you think about making queries that are bound by a total privacy budget.  If you have a query that are shaped in one way and that use x% of the privacy budget and another query that uses y% of the budget, giving each a different partition can mean that you can keep both the anti-replay and privacy budget tracking separate for reports in each.  Having that enforced structurally avoids dipping into shared state if you run those queries concurrently, but it also makes the privacy budget tracking easier.\r\n\r\nThat sort of thing is generally the domain of a task when you know about tasks, but that requires a bunch of prior knowledge about what you might ask.  This would be more flexible.",
+          "createdAt": "2024-10-18T04:52:25Z",
+          "updatedAt": "2024-10-18T04:52:25Z"
+        },
+        {
+          "author": "cjpatton",
+          "authorAssociation": "NONE",
+          "body": "General question about the draft: when any of the extensions are in use, do you change how DAP does replay protection? This seems to be suggested in the intro, but I'm not clear on what the changes are. (FWIW I don't object to a different or more relaxed replay mechanism if DP closes the gap.)",
+          "createdAt": "2024-10-18T14:55:18Z",
+          "updatedAt": "2024-10-18T14:55:18Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "I_kwDONA6MD86au0V_",
+      "title": "Relationship with taskprov",
+      "url": "https://github.com/martinthomson/dap-dp-ext/issues/4",
+      "state": "OPEN",
+      "author": "cjpatton",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "This note caught my eye (this may be related to https://github.com/ietf-wg-ppm/draft-ietf-ppm-dap-taskprov/issues/85):\r\n\r\n> TODO: It would make sense for the corresponding extensions to be added to [[TASKPROV](https://martinthomson.github.io/dap-dp-ext/draft-thomson-ppm-dap-dp-ext.html#TASKPROV)]. However, that protocol does not include any provision for extensions.\r\n\r\nHow do you think taskprov might interact with other report extensions?",
+      "createdAt": "2024-10-17T23:15:10Z",
+      "updatedAt": "2024-10-18T14:58:41Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "OWNER",
+          "body": "Take the privacy budget one.  If I'm submitting reports for a new task that uses privacy budgets, I might want to set the privacy budget for that new task (to match the report, probably).\r\n\r\nThe same is likely true for all of the others.  There might be an expectation that all reports for the new task have the same value for any of these extensions.  That's certainly something that our differential privacy expert has requested informally for the requester identity.  I'm not 100% on understanding why that is important, because it's early, but I think that it's about ensuring that the sensitivty analysis that we've assumed to apply to contributions from clients is properly respected.",
+          "createdAt": "2024-10-18T04:56:10Z",
+          "updatedAt": "2024-10-18T04:56:10Z"
+        },
+        {
+          "author": "cjpatton",
+          "authorAssociation": "NONE",
+          "body": "I see... I first read this note as \"let's bind all report extensions compatible with the task to the task ID\". Something like this might be useful, but it would need to be fleshed out.\r\n\r\nIn this particular case, I wonder if what you need can be expressed as a `DpMechanism` as in https://github.com/ietf-wg-ppm/draft-ietf-ppm-dap-taskprov/pull/84.",
+          "createdAt": "2024-10-18T14:58:39Z",
+          "updatedAt": "2024-10-18T14:58:39Z"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "I_kwDONA6MD86axVCw",
+      "title": "Tighten requester identity text",
+      "url": "https://github.com/martinthomson/dap-dp-ext/issues/5",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "In our model for ad attribution, this field is critical because it ensures that reports for different requesters cannot be combined.  An attacker that could combine reports under multiple different requesters, especially where they are have knowledge that shows that they come from the same person, can blow past sensitivity limits.\r\n\r\nThis also means that we have to ensure that tasks that use this extension only permit reports that include the fixed value for the extension.",
+      "createdAt": "2024-10-18T06:59:48Z",
+      "updatedAt": "2024-10-18T06:59:48Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 6,
+      "id": "I_kwDONA6MD86axV8K",
+      "title": "Delegate identity",
+      "url": "https://github.com/martinthomson/dap-dp-ext/issues/6",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "This is far less important than the requester (who spends privacy budget at the client by requesting a report), but identifying the entity to which a delegation is made could help the aggregation service manage the accounting for requests and that sort of thing.  Making that information available should help with that accounting.\r\n\r\nWe need to do more work to work through the privacy design for various delegation scenarios, so this was not included in the original draft.",
+      "createdAt": "2024-10-18T07:01:53Z",
+      "updatedAt": "2024-10-18T07:01:53Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": []
 }
