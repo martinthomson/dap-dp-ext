@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-20T01:27:23.205908+00:00",
+  "timestamp": "2024-10-22T01:21:53.506897+00:00",
   "repo": "martinthomson/dap-dp-ext",
   "labels": [
     {
@@ -117,7 +117,7 @@
       "labels": [],
       "body": "Is the intent of \"Report Partition\" to ensure that reports are only aggregated together if they share the same label? If so, you may want to define a [batch mode](https://ietf-wg-ppm.github.io/draft-ietf-ppm-dap/draft-ietf-ppm-dap.html#section-4.2) for DAP. The idea of a batch mode is that it's supposed to dictate how reports can be partitioned into batches. For instance, you may want that the collector specifies the label or labels it wants to aggregate on.\r\n\r\nFWIW, [Mastic may provide the functionality you want](https://jimouris.github.io/draft-mouris-cfrg-mastic/draft-mouris-cfrg-mastic.html#section-1-6.2.1). It has the added value of not revealing to the aggregators which reports have which labels. However, the communication cost might be prohibitively high, depending on the metrics you want to aggregate.",
       "createdAt": "2024-10-17T22:29:10Z",
-      "updatedAt": "2024-10-18T14:55:20Z",
+      "updatedAt": "2024-10-21T01:04:03Z",
       "closedAt": null,
       "comments": [
         {
@@ -133,6 +133,13 @@
           "body": "General question about the draft: when any of the extensions are in use, do you change how DAP does replay protection? This seems to be suggested in the intro, but I'm not clear on what the changes are. (FWIW I don't object to a different or more relaxed replay mechanism if DP closes the gap.)",
           "createdAt": "2024-10-18T14:55:18Z",
           "updatedAt": "2024-10-18T14:55:18Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "OWNER",
+          "body": "These generally would allow for tighter constraints on scope for replay protection, with the exception of the \"no task_id\" one, which expands the scope.\r\n\r\n(Of course, you can always track replays across a broader scope, the odds of rejecting valid measurements should be negligible.  This is about making it possible to narrow the scope.)",
+          "createdAt": "2024-10-21T01:04:02Z",
+          "updatedAt": "2024-10-21T01:04:02Z"
         }
       ]
     },
@@ -196,6 +203,22 @@
       "body": "This is far less important than the requester (who spends privacy budget at the client by requesting a report), but identifying the entity to which a delegation is made could help the aggregation service manage the accounting for requests and that sort of thing.  Making that information available should help with that accounting.\r\n\r\nWe need to do more work to work through the privacy design for various delegation scenarios, so this was not included in the original draft.",
       "createdAt": "2024-10-18T07:01:53Z",
       "updatedAt": "2024-10-18T07:01:53Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 7,
+      "id": "I_kwDONA6MD86bDYUT",
+      "title": "Cap on the privacy budget",
+      "url": "https://github.com/martinthomson/dap-dp-ext/issues/7",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "We use a unit of $\\text{m}\\varepsilon$, so there's a good chance that this will need two bytes to encode some useful values.  It is unlikely that anything more than that will be necessary.  Google's ARA experiment allows for an $\\varepsilon=64$ but that is a truly ludicrous value to attach to a single query.\r\n\r\nOptions then:\r\n\r\n1. Allow any number of bytes, but allow implementations to reject values that are more than two bytes.\r\n2. Allow one or two bytes.\r\n3. Allow two bytes only.\r\n\r\nGiven where we stand, the difference between options 2 and 3 is negligible.  I can see reasons for either.",
+      "createdAt": "2024-10-21T05:15:35Z",
+      "updatedAt": "2024-10-21T05:15:35Z",
       "closedAt": null,
       "comments": []
     }
