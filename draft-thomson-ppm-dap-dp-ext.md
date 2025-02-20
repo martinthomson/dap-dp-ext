@@ -244,27 +244,45 @@ see {{?DWORK=DOI.10.1561/0400000042}},
 and {{Section 7.5 of DAP}}),
 the client might rely on an understanding of that mechanism
 to model privacy loss.
-However, such privacy loss might be based on
-an assumption that the client contributes just one report.
-A complete model needs to consider
-the contributions of multiple reports.
+However, without finer controls,
+clients need to attribute a fixed privacy loss
+to each report.
+Consequently, the client needs to
+limit the number of reports it generates.
 
-A privacy budgeting system
-provides additional flexibility.
-Privacy loss associated with any task
+A budget ensures that the total privacy loss can be bounded
+while providing more flexibility in how reports are constructed.
+Privacy loss associated with any report
 (or information release)
-can be adjusted to control the amount of noise that is added.
+can be adjusted.
+Importantly, the amount of noise added to aggregates
+is based on the expended budget.
+In general,
+spending more privacy budget means that less noise is needed
+to maintain the same level of privacy;
+conversely, spending less budget means more noise.
+
 A budget might be specified in terms of a metric
 (like the epsilon parameter in (ε, δ)-differential privacy)
 that is expended with each information release.
 
-In one version of that model,
-a client is responsible for the management of any privacy budget.
-Each report represents a logical information release,
-contingent on being sent for aggregation
-by aggregators that are trusted to apply
-an appropriate differential privacy mechanism
-with the appropriate level of noise.
+For example, for an overall budget of ε=10
+might be split four ways: (0.5, 1.5, 2, 6).
+Noise might then be added,
+drawing from a distribution
+with a width inversely proportional to the budget spent;
+that is, a distribution with a standard deviation proportional to
+2, 2/3, 1/2, and 1/6 respectively.
+
+This extension gives clients the ability to manage privacy budget expenditure.
+By binding the amount of budget spent to each report,
+the client can transfer responsibility
+for applying differential privacy
+to the aggregation service.
+The addition of noise by the aggregation service
+can ensure a better trade-off between
+the amount of added noise
+and privacy parameters.
 
 
 ## Privacy Budget Report Extension Format
