@@ -4,8 +4,8 @@
 
 Privacy Preserving Measurement                                M. Thomson
 Internet-Draft                                                   Mozilla
-Intended status: Standards Track                        20 February 2025
-Expires: 24 August 2025
+Intended status: Standards Track                             16 May 2025
+Expires: 17 November 2025
 
 
      Distributed Aggregation Protocol (DAP) Extensions for Improved
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 August 2025.
+   This Internet-Draft will expire on 17 November 2025.
 
 Copyright Notice
 
@@ -274,10 +274,13 @@ Table of Contents
    amount of privacy budget that the client considers to be expended as
    a result of producing a report.
 
-   The value of the codepoint is an encoding of the number of milli-
+   The value of the codepoint is an encoding of the number of micro-
    epsilons of budget that are expended, using as many bytes as needed
    to encode the value in network byte order.  Each unit is a one-
-   thousandth of an epsilon (ε) as used in (ε, δ)-differential privacy.
+   millionth of an epsilon (ε) as used in (ε, δ)-differential privacy.
+
+   The micro-epsilon value is encoded as a 32-bit integer in network
+   byte order.  This permits the expenditure of up to ε=4294.967295.
 
       |  Note(1): Where the delta (δ) value is non-zero, and small
       |  epsilon increments can be expended, clients might also need to
@@ -342,9 +345,9 @@ Table of Contents
    [DAP]      Geoghegan, T., Patton, C., Pitman, B., Rescorla, E., and
               C. A. Wood, "Distributed Aggregation Protocol for Privacy
               Preserving Measurement", Work in Progress, Internet-Draft,
-              draft-ietf-ppm-dap-14, 3 February 2025,
+              draft-ietf-ppm-dap-15, 29 April 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-
-              14>.
+              15>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -388,9 +391,9 @@ Table of Contents
 
    [TASKPROV] Wang, S. and C. Patton, "Task Binding and In-Band
               Provisioning for DAP", Work in Progress, Internet-Draft,
-              draft-ietf-ppm-dap-taskprov-01, 2 November 2024,
+              draft-ietf-ppm-dap-taskprov-02, 5 May 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-
-              taskprov-01>.
+              taskprov-02>.
 
    [VDAF]     Barnes, R., Cook, D., Patton, C., and P. Schoppmann,
               "Verifiable Distributed Aggregation Functions", Work in

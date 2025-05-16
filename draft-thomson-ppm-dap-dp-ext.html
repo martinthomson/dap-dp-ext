@@ -15,19 +15,19 @@ This includes bindings of reports to specific options,
 so that the aggregation service can better implement privacy budgeting
 and replay protections. 
     " name="description">
-<meta content="xml2rfc 3.27.0" name="generator">
+<meta content="xml2rfc 3.28.1" name="generator">
 <meta content="decibels" name="keyword">
 <meta content="replay" name="keyword">
 <meta content="draft-thomson-ppm-dap-dp-ext-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.27.0
-    Python 3.12.9
+  xml2rfc 3.28.1
+    Python 3.12.10
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.5
+    Jinja2 3.1.6
     lxml 5.3.0
-    platformdirs 4.3.6
+    platformdirs 4.3.7
     pycountry 24.6.1
     PyYAML 6.0.2
     requests 2.32.3
@@ -1051,11 +1051,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">DAP DP Extensions</td>
-<td class="right">February 2025</td>
+<td class="right">May 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Thomson</td>
-<td class="center">Expires 24 August 2025</td>
+<td class="center">Expires 17 November 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-thomson-ppm-dap-dp-ext-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-20" class="published">20 February 2025</time>
+<time datetime="2025-05-16" class="published">16 May 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-24">24 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-11-17">17 November 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1129,7 +1129,7 @@ and replay protections.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 24 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 17 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1415,7 +1415,7 @@ an appropriate differential privacy mechanism
 (that is, added noise;
 see <span>[<a href="#DWORK" class="cite xref">DWORK</a>]</span>,
 <span>[<a href="#DAP-DP" class="cite xref">DAP-DP</a>]</span>,
-and <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-14#section-7.5" class="relref">Section 7.5</a> of [<a href="#DAP" class="cite xref">DAP</a>]</span>),
+and <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-15#section-7.5" class="relref">Section 7.5</a> of [<a href="#DAP" class="cite xref">DAP</a>]</span>),
 the client might rely on an understanding of that mechanism
 to model privacy loss.
 However, without finer controls,
@@ -1464,22 +1464,25 @@ encodes the amount of privacy budget
 that the client considers to be expended
 as a result of producing a report.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-2">The value of the codepoint is
-an encoding of the number of milli-epsilons
+an encoding of the number of micro-epsilons
 of budget that are expended,
 using as many bytes as needed to encode the value
 in network byte order.
-Each unit is a one-thousandth of an epsilon (ε) as used in
+Each unit is a one-millionth of an epsilon (ε) as used in
 (ε, δ)-differential privacy.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<aside id="section-5.1-3">
-          <p id="section-5.1-3.1">Note(1): Where the delta (δ) value is non-zero,
+<p id="section-5.1-3">The micro-epsilon value is encoded as a 32-bit integer
+in network byte order.
+This permits the expenditure of up to ε=4294.967295.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<aside id="section-5.1-4">
+          <p id="section-5.1-4.1">Note(1): Where the delta (δ) value is non-zero,
 and small epsilon increments can be expended,
 clients might also need to limit the number of reports
-to prevent the overall delta value from getting large.<a href="#section-5.1-3.1" class="pilcrow">¶</a></p>
+to prevent the overall delta value from getting large.<a href="#section-5.1-4.1" class="pilcrow">¶</a></p>
 </aside>
-<aside id="section-5.1-4">
-          <p id="section-5.1-4.1">Note(2): A separate report extension could be defined
+<aside id="section-5.1-5">
+          <p id="section-5.1-5.1">Note(2): A separate report extension could be defined
 to change the scale of this value
-or switch to a different unit, as necessary.<a href="#section-5.1-4.1" class="pilcrow">¶</a></p>
+or switch to a different unit, as necessary.<a href="#section-5.1-5.1" class="pilcrow">¶</a></p>
 </aside>
 </section>
 </div>
@@ -1538,7 +1541,7 @@ is enumerated in the respective sections:
 <a href="#partition" class="auto internal xref">Section 4.2</a>,
 and <a href="#budget" class="auto internal xref">Section 5</a>.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <p id="section-6-2">Use of DAP is subject to the security considerations
-of DAP (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-14#section-7" class="relref">Section 7</a> of [<a href="#DAP" class="cite xref">DAP</a>]</span>)
+of DAP (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-15#section-7" class="relref">Section 7</a> of [<a href="#DAP" class="cite xref">DAP</a>]</span>)
 and the VDAF that is in use (<span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vdaf-14#section-9" class="relref">Section 9</a> of [<a href="#VDAF" class="cite xref">VDAF</a>]</span>.<a href="#section-6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1549,7 +1552,7 @@ and the VDAF that is in use (<span><a href="https://datatracker.ietf.org/doc/htm
       </h2>
 <p id="section-7-1">Registrations for the defined report extensions need to be made,
 but this depends on the resolution of the TODO
-in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-14#section-8.2.2" class="relref">Section 8.2.2</a> of [<a href="#DAP" class="cite xref">DAP</a>]</span>.<a href="#section-7-1" class="pilcrow">¶</a></p>
+in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-15#section-8.2.2" class="relref">Section 8.2.2</a> of [<a href="#DAP" class="cite xref">DAP</a>]</span>.<a href="#section-7-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-combined-references">
@@ -1565,7 +1568,7 @@ in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-14#se
 <dl class="references">
 <dt id="DAP">[DAP]</dt>
         <dd>
-<span class="refAuthor">Geoghegan, T.</span>, <span class="refAuthor">Patton, C.</span>, <span class="refAuthor">Pitman, B.</span>, <span class="refAuthor">Rescorla, E.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Distributed Aggregation Protocol for Privacy Preserving Measurement"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ppm-dap-14</span>, <time datetime="2025-02-03" class="refDate">3 February 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-14">https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-14</a>&gt;</span>. </dd>
+<span class="refAuthor">Geoghegan, T.</span>, <span class="refAuthor">Patton, C.</span>, <span class="refAuthor">Pitman, B.</span>, <span class="refAuthor">Rescorla, E.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Distributed Aggregation Protocol for Privacy Preserving Measurement"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ppm-dap-15</span>, <time datetime="2025-04-29" class="refDate">29 April 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-15">https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-15</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -1610,7 +1613,7 @@ in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-14#se
 <dd class="break"></dd>
 <dt id="TASKPROV">[TASKPROV]</dt>
         <dd>
-<span class="refAuthor">Wang, S.</span> and <span class="refAuthor">C. Patton</span>, <span class="refTitle">"Task Binding and In-Band Provisioning for DAP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ppm-dap-taskprov-01</span>, <time datetime="2024-11-02" class="refDate">2 November 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-taskprov-01">https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-taskprov-01</a>&gt;</span>. </dd>
+<span class="refAuthor">Wang, S.</span> and <span class="refAuthor">C. Patton</span>, <span class="refTitle">"Task Binding and In-Band Provisioning for DAP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ppm-dap-taskprov-02</span>, <time datetime="2025-05-05" class="refDate">5 May 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-taskprov-02">https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-taskprov-02</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="VDAF">[VDAF]</dt>
       <dd>
