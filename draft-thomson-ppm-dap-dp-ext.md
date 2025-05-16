@@ -294,12 +294,16 @@ that the client considers to be expended
 as a result of producing a report.
 
 The value of the codepoint is
-an encoding of the number of milli-epsilons
+an encoding of the number of micro-epsilons
 of budget that are expended,
 using as many bytes as needed to encode the value
 in network byte order.
-Each unit is a one-thousandth of an epsilon (ε) as used in
+Each unit is a one-millionth of an epsilon (ε) as used in
 (ε, δ)-differential privacy.
+
+The micro-epsilon value is encoded as a 32-bit integer
+in network byte order.
+This permits the expenditure of up to ε=4294.967295.
 
 {:aside}
 > Note(1): Where the delta (δ) value is non-zero,
