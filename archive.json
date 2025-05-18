@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-15T01:38:54.510287+00:00",
+  "timestamp": "2025-05-18T01:47:13.387171+00:00",
   "repo": "martinthomson/dap-dp-ext",
   "labels": [
     {
@@ -211,15 +211,39 @@
       "id": "I_kwDONA6MD86bDYUT",
       "title": "Cap on the privacy budget",
       "url": "https://github.com/martinthomson/dap-dp-ext/issues/7",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "We use a unit of $\\text{m}\\varepsilon$, so there's a good chance that this will need two bytes to encode some useful values.  It is unlikely that anything more than that will be necessary.  Google's ARA experiment allows for an $\\varepsilon=64$ but that is a truly ludicrous value to attach to a single query.\r\n\r\nOptions then:\r\n\r\n1. Allow any number of bytes, but allow implementations to reject values that are more than two bytes.\r\n2. Allow one or two bytes.\r\n3. Allow two bytes only.\r\n\r\nGiven where we stand, the difference between options 2 and 3 is negligible.  I can see reasons for either.",
       "createdAt": "2024-10-21T05:15:35Z",
-      "updatedAt": "2024-10-21T05:15:35Z",
-      "closedAt": null,
+      "updatedAt": "2025-05-16T02:36:40Z",
+      "closedAt": "2025-05-16T02:36:40Z",
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "OWNER",
+          "body": "With changes in PPA, we're now using $\\mu\\varepsilon$.  For those, it doesn't really make sense to do anything other than a 4 byte encoding.  Closing this one out.",
+          "createdAt": "2025-05-16T02:36:40Z",
+          "updatedAt": "2025-05-16T02:36:40Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "I_kwDONA6MD8621OMn",
+      "title": "Use micro-epsilons",
+      "url": "https://github.com/martinthomson/dap-dp-ext/issues/8",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "As discussed with editors, we might need that resolution: https://github.com/w3c/ppa/issues/77",
+      "createdAt": "2025-05-15T21:22:51Z",
+      "updatedAt": "2025-05-16T02:34:12Z",
+      "closedAt": "2025-05-16T02:34:12Z",
       "comments": []
     }
   ],
