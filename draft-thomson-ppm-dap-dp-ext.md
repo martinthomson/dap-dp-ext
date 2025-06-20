@@ -358,10 +358,9 @@ This parameter ensures that the entity cannot direct reports
 to a task that has an inadequate differential privacy mechanism.
 
 
-
 # Security Considerations
 
-The security considerations relevant to each extension
+Security factors specific to each extension
 is enumerated in the respective sections:
 {{late-bind}},
 {{requester}},
@@ -369,7 +368,7 @@ is enumerated in the respective sections:
 and {{budget}}.
 
 Use of DAP is subject to the security considerations
-of DAP ({{Section 7 of DAP}})
+of DAP ({{Section 8 of DAP}})
 and the VDAF that is in use ({{Section 9 of VDAF}}.
 
 
