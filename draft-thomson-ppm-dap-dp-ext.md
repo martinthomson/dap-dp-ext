@@ -374,9 +374,18 @@ and the VDAF that is in use ({{Section 9 of VDAF}}.
 
 # IANA Considerations
 
-Registrations for the defined report extensions need to be made,
-but this depends on the resolution of the TODO
-in {{Section 8.2.2 of DAP}}.
+This document registers extensions in the "Report Extension Identifiers" registry
+established in {{Section 9.2.2 of DAP}}.
+
+The new registrations are listed in {{t-dap-ext}}.
+
+| Value  | Name               | Reference     |
+|:-------|:-------------------|:--------------|
+| TBD    | late_binding       | {{late-bind}} |
+| TBD    | requester          | {{requester}} |
+| TBD    | partition          | {{partition}} |
+| TBD    | privacy_budget     | {{budget}}    |
+{: #t-dap-ext title="DAP Extensions"}
 
 
 --- back
