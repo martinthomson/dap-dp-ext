@@ -241,7 +241,7 @@ an appropriate differential privacy mechanism
 (that is, added noise;
 see {{?DWORK=DOI.10.1561/0400000042}},
 {{?DAP-DP=I-D.wang-ppm-differential-privacy}},
-and {{Section 7.5 of DAP}}),
+and {{Section 8.5 of DAP}}),
 the client might rely on an understanding of that mechanism
 to model privacy loss.
 However, without finer controls,
