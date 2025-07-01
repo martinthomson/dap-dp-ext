@@ -77,10 +77,12 @@ This document defines several report extensions to DAP
 that either enable greater flexibility
 or help constrain the flexibility allowed by other options.
 
-{:aside}
-> TODO: It would make sense for the corresponding extensions to be added
-> to {{?TASKPROV=I-D.ietf-ppm-dap-taskprov}}.
-> However, that protocol does not include any provision for extensions.
+This document also defines a task provisioning extension
+(see {{Section 3.3 of !TASKPROV=I-D.ietf-ppm-dap-taskprov}})
+that lists the report extensions
+that need to included in every report.
+This ensures that the task is correctly configured
+to recognize these report extensions.
 
 
 # Conventions and Definitions
@@ -177,6 +179,7 @@ as coming from that requester.
 
 The specific encoding used in this extension
 will depend on the application.
+This extension therefore contains a sequence of application-defined bytes.
 However, the use of a globally-unique identifier,
 such as an origin ({{?ORIGIN=RFC6454}})
 or serialized site ({{SITE}}),
@@ -358,6 +361,68 @@ This parameter ensures that the entity cannot direct reports
 to a task that has an inadequate differential privacy mechanism.
 
 
+# Task Configuration Extensions {#report-extensions}
+
+DAP tasks that are created with the DAP task configuration extension
+{{!TASKPROV}}
+can set constraints on the reports that are accepted for a task.
+
+
+~~~ tls-syntax
+enum {
+  single_requester (0xTBD),
+  task_budget (0xTBD),
+  (2^16-1)
+} ExtensionType;
+
+uint16 ReportExtensions<2..2^16-2>;
+~~~
+
+Analogues of the
+requester_identity ({{requester}}) and
+privacy_budget ({{budget}})
+report extensions are defined.
+These task provisioning extensions ensure that reports submitted to the task
+include the corresponding report extensions and
+ensure that reports with invalid values are rejected.
+
+
+## Single Requester Task Extension {#single-requester}
+
+This single_requester task provisioning extension contains the identity of a requester.
+The format of this is identical to the requester_identity report extension;
+see {{requester}}.
+
+Use of this extension indicates that all reports
+submitted to the task MUST include a requester_identity report extension
+with the specified value.
+All reports that omit that extension
+or contain a different value
+MUST be rejected.
+
+
+## Privacy Budget Task Extension {#task-budget}
+
+The task_budget task provisioning extension contains the maximum privacy budget
+that can be expended on the task.
+The value is encoded identically to the privacy_budget report extension;
+see {{budget}}.
+
+The task_budget task provisioning extension both
+establishes a requirement for reports to include the privacy_budget report extension
+and sets an upper bound on the amount of privacy budget that can be expended.
+Reports that contain no privacy_budget report extension
+or those that contain a privacy_budget report extension value
+larger than the value in the task_budget extension
+MUST be rejected.
+
+The value of this extension can be used
+to determine privacy budget expenditure (if centrally managed)
+or to set noise parameters.
+Aggregators could also use the maximum value
+across all submitted reports, if that value is lower.
+
+
 # Security Considerations
 
 Security factors specific to each extension
@@ -382,10 +447,20 @@ The new registrations are listed in {{t-dap-ext}}.
 | Value  | Name               | Reference     |
 |:-------|:-------------------|:--------------|
 | TBD    | late_binding       | {{late-bind}} |
-| TBD    | requester          | {{requester}} |
+| TBD    | requester_identity | {{requester}} |
 | TBD    | partition          | {{partition}} |
 | TBD    | privacy_budget     | {{budget}}    |
 {: #t-dap-ext title="DAP Extensions"}
+
+This document registers the `report_extensions` task provisioning extension
+in the "Taskbind Extensions" registry
+established in {{Section 7.2 of !TASKPROV}}:
+
+| Value  | Name               | Reference            |
+|:-------|:-------------------|:---------------------|
+| TBD    | single_requester   | {{single-requester}} |
+| TBD    | task_budget        | {{task-budget}}      |
+{: #t-dap-taskprov-ext title="Task Provisioning Extensions"}
 
 
 --- back
