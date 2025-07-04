@@ -186,6 +186,14 @@ Spoiling of results through misdirection
 is safeguarded by the verification
 that is performed at the preparation phase of the VDAF.
 
+Misdirecting reports this way can still lead
+to limited spoiling of tasks,
+within the bounds permitted for a single task.
+However, any entity that can perform such redirection
+is potentially able to effect the same outcome
+more effectively
+through entirely falsified reports.
+
 Enforcing anti-replay
 for tasks that are configured to accept reports with this extension
 cannot be applied on a per-task scope.
