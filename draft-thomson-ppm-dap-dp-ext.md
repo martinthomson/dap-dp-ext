@@ -478,7 +478,7 @@ MUST be rejected.
 
 ## Privacy Budget Task Extension {#task-budget}
 
-The task_budget task provisioning extension contains the maximum privacy budget
+The task_budget task provisioning extension contains the minimum privacy budget
 that can be expended on the task.
 The value is encoded identically to the privacy_budget report extension;
 see {{budget}}.
@@ -488,14 +488,15 @@ establishes a requirement for reports to include the privacy_budget report exten
 and sets an upper bound on the amount of privacy budget that can be expended.
 Reports that contain no privacy_budget report extension
 or those that contain a privacy_budget report extension value
-larger than the value in the task_budget extension
+smaller than the value in the task_budget extension
 MUST be rejected.
 
 The value of this extension can be used
-to determine privacy budget expenditure (if centrally managed)
-or to set noise parameters.
-Aggregators could also use the maximum value
-across all submitted reports, if that value is lower.
+to bound the noise that is applied
+by a centrally managed differential privacy mechanism.
+Aggregators use the minimum value
+across all submitted reports to determine how much noise is added;
+setting a minimum budget allows that noise to be bounded.
 
 
 # Security Considerations
