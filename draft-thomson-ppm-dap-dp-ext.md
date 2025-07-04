@@ -1,6 +1,6 @@
 ---
-title: "Distributed Aggregation Protocol (DAP) Extensions for Improved Application of Differential Privacy"
-abbrev: "DAP DP Extensions"
+title: "Distributed Aggregation Protocol (DAP) Report Binding Extensions"
+abbrev: "DAP Extensions"
 category: std
 
 docname: draft-thomson-ppm-dap-dp-ext-latest
@@ -54,35 +54,74 @@ and replay protections.
 
 # Introduction
 
-The Distributed Aggregation Protocol (DAP) {{!DAP=I-D.ietf-ppm-dap}}
-can be used as part of a differentially-private system.
+The core Distributed Aggregation Protocol (DAP) {{!DAP=I-D.ietf-ppm-dap}}
+binds the reports that it aggregates in specific ways by default.
+This makes the protocol suited to a deployment model
+where reports are submitted directly to the leader
+as they are generated.
 
-Differential privacy depends on being able to limit the contributions
-from participants.
-The basic mechanism that DAP uses to cap contributions is anti-replay.
+DAP depends on report extensions to enable alternative deployment models
+and approaches.
+This document defines extensions to enable two key changes
+to how DAP is used.
+
+* The first is where an intermediary is responsible for gathering reports
+  and performing batch submissions for aggregation.
+
+* The second is to support the use of DAP
+  in a differentially-private system.
+
+For the first, DAP ordinarily depends on clients knowing
+the details of the aggregation task when generating reports.
+The late_binding report extension ({{late-bind}})
+allows this requirement to be loosened.
+
+The cost is that the scope of anti-replay protections
+needs to much broader.
+For this, scoping report extensions ({{scoping}}) might be used
+to help manage that scope.
+
+For differential privacy,
+its effective implementation depends on
+being able to limit contributions from participants,
+or set bounds on sensitivity.
+The basic mechanism that DAP uses to cap contributions
+is record anti-replay.
 Aggregators are responsible for ensuring that
 the same report cannot be aggregated more than once.
 An honest participant will contribute a limited number of reports
 and can rely on at least one aggregator
-preventing that report from being used multiple times.
-(The threat model does not seek to protect the privacy of a dishonest participant.)
+preventing each report from being used multiple times.
 
-This basic anti-replay mechanism allows DAP
-to provide caps on contributions.
-The resulting system is somewhat inflexible,
-which can limit the applicability of the protocol
-outside of the narrowly-defined usage modes in the basic specification.
+The default configuration of DAP also depends on
+having differential privacy configuration
+known to clients when reports are generated.
+Clients need to know the parameters
+of the differential privacy mechanism that is configured
+so that they can properly account for any privacy loss.
+This can limit the applicability of the protocol
+outside of certain narrow patterns.
 
-This document defines several report extensions to DAP
-that either enable greater flexibility
-or help constrain the flexibility allowed by other options.
+This document extensions to DAP
+that allow reports to be bound
+to a specific differential privacy budget expenditure ({{budget}}).
+For cases where the DAP aggregators are responsible
+for applying the differential privacy mechanism --
+namely the addition of noise --
+this ensures that clients can depend on the correct amount of noise being applied.
+
+For a differentially-private system,
+scoping extensions ({{scoping}}) can be essential.
+Scoping constraints can be used to ensure that contributions
+from different contexts are not combined
+in a way that would cause sensitivity bounds to be exceeded.
 
 This document also defines a task provisioning extension
 (see {{Section 3.3 of !TASKPROV=I-D.ietf-ppm-dap-taskprov}})
 that lists the report extensions
 that need to included in every report.
-This ensures that the task is correctly configured
-to recognize these report extensions.
+These task extensions also set constraints
+on the value of those report extensions.
 
 
 # Conventions and Definitions
