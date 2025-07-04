@@ -284,15 +284,22 @@ in network byte order.
 This permits the expenditure of up to ε=4294.967295.
 
 {:aside}
-> Note(1): Where the delta (δ) value is non-zero,
-> and small epsilon increments can be expended,
-> clients might also need to limit the number of reports
-> to prevent the overall delta value from getting large.
-
-{:aside}
-> Note(2): A separate report extension could be defined
+> Note: A separate report extension could be defined
 > to change the scale of this value
 > or switch to a different unit, as necessary.
+
+The delta (δ) parameter is not directly bound to reports.
+This parameter is rarely used in privacy budgeting.
+A maximum value might be fixed as part of the system,
+with the final value being chosen based on the total report volume
+and -- where applicable --
+the total number of tasks that each client might contribute to.
+
+{:aside}
+> Note: Where the delta (δ) value is non-zero,
+> and a client might generate many reports,
+> clients might also need to limit the number of reports
+> to prevent the overall delta value from growing large.
 
 
 ## Privacy Budget Usage
