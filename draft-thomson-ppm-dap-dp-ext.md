@@ -60,31 +60,35 @@ are maintained.
 # Introduction
 
 The core Distributed Aggregation Protocol (DAP) {{!DAP=I-D.ietf-ppm-dap}}
-binds the reports that it aggregates in specific ways by default.
-This makes the protocol suited to a deployment model
+is suited to a deployment model
 where reports are submitted directly to the leader
 as they are generated.
 
-DAP depends on report extensions to enable alternative deployment models
-and approaches.
-This document defines extensions to enable two key changes
-to how DAP is used.
+DAP report extensions can be used to
+enable alternative deployment models and approaches.
+This document defines a set of extensions
+to enable two key changes to how DAP is used:
 
-* The first is where an intermediary is responsible for gathering reports
+* A operating mode where an intermediary is responsible for gathering reports
   and performing batch submissions for aggregation.
 
-* The second is to support the use of DAP
-  in a differentially-private system.
+* A operating mode where DAP
+  is part of a differentially-private system
+  where the differential privacy mechanism is applied
+  as part of the aggregation process.
 
-For the first, DAP ordinarily depends on clients knowing
-the details of the aggregation task when generating reports.
-The late_binding report extension ({{late-bind}})
-allows this requirement to be loosened.
+No changes are needed to enable batched report submission in DAP.
+The challenge is that DAP assumes that clients know
+all the details of the aggregation task when generating reports.
+The late_binding report extension ({{late-bind}}) loosens this requirement,
+allowing the intermediary to make some choices
+about task configuration without coordinating with clients.
 
-The cost is that the scope of anti-replay protections
-needs to much broader.
-For this, scoping report extensions ({{scoping}}) might be used
-to help manage that scope.
+One consequence of late binding is
+the scope of anti-replay protections needs to much broader.
+For this, scoping report extensions ({{scoping}}) are defined
+to help constrain the scope of reports
+over which replay protection operates.
 
 For differential privacy,
 its effective implementation depends on
@@ -107,9 +111,9 @@ so that they can properly account for any privacy loss.
 This can limit the applicability of the protocol
 outside of certain narrow patterns.
 
-This document extensions to DAP
+This document defines extensions to DAP
 that allow reports to be bound
-to a specific differential privacy budget expenditure ({{budget}}).
+to a specific amount of differential privacy budget expenditure ({{budget}}).
 For cases where the DAP aggregators are responsible
 for applying the differential privacy mechanism --
 namely the addition of noise --
