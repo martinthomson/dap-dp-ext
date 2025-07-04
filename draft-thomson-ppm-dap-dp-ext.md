@@ -162,6 +162,10 @@ When sharding and protecting reports,
 the task ID is replaced with a the fixed, 32-byte sequence of
 b13e8440f1cdb4da51eed3967e0a2652d27f5005bc35f751daf188b4b746708b
 (in hex).
+Specifically, this includes the `task_id`
+that is passed to the `Vdaf.shard` function
+and is encoded in the `InputShareAad` struct;
+see {{Section 4.5.2 of DAP}}.
 
 {:aside}
 > This is the output from SHA-256 {{?SHA2=RFC6234}}
