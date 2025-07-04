@@ -551,3 +551,4 @@ in {{t-dap-taskprov-ext}}.
 
 Roxana Geambesu noted that a binding to requester identity ({{requester}})
 was an important component of a robust differential privacy system design.
+David Cook provided useful feedback about the design and document.
