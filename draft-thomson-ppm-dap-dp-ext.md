@@ -175,99 +175,6 @@ such as one or more of the scoping extensions (see {{scoping}}),
 will be used to make it more feasible
 for an aggregator to comply with anti-replay requirements.
 
-
-# Scoping Extensions {#scoping}
-
-The DAP report extensions in this section might be used to either
-constrain the use of reports
-for tasks that are configured with matching values
-or group reports for the purposes of detecting duplicates.
-
-Including additional scoping information can also
-ensure that reports do not get reused
-outside of their intended scope.
-
-This section defines report extensions that carry
-requester identity ({{requester}})
-and report partition ({{partition}}).
-
-
-## Requester (Website) Identity {#requester}
-
-Reports might be requested by
-an entity that operates at lower trust level than
-the entity that assembles the report.
-The entity at the lower trust level
-might not have access to the information necessary
-to generate the report.
-
-The requester_identity report extension
-(codepoint 0xTBD)
-contains an encoding of the entity
-that requested the report be created.
-
-For example, an application could ask the operating system
-to generate a report
-using information that would normally be withheld from it.
-Similarly, a website could ask a web browser to generate a report
-based on otherwise secret information.
-In either case,
-the release of information for report
-is conditional on it only being used
-by a specific aggregation service
-under terms that have been previously established
-with the aggregators.
-Binding the report to the identity of the requester
-ensures that any use of the system can be accounted for
-as coming from that requester.
-
-The specific encoding used in this extension
-will depend on the application.
-This extension therefore contains a sequence of application-defined bytes.
-However, the use of a globally-unique identifier,
-such as an origin ({{?ORIGIN=RFC6454}})
-or serialized site ({{SITE}}),
-reduces the likelihood of name collisions.
-A name collision might either allow two requesters
-that share an aggregator
-to share and reuse each others reports
-(or perhaps to marginally increase the odds
-of having reports spuriously detected duplicates).
-
-
-## Report Partition {#partition}
-
-This extension allows a client to bind a report
-to an application-defined label.
-This allows applications to partition reports
-and have each partition managed separately.
-
-The report_partition report extension
-(codepoint 0xTBD)
-contains an application-defined sequence of bytes.
-
-The use of this report extension allows aggregators
-to partition their state for tracking reports.
-Duplicate reports only need to be tracked
-across a matching partition,
-for detecting duplicates within a task
-or for detecting duplicates across tasks.
-
-The selection of partition values might need
-to be coordinated with aggregators.
-If partitions are used by aggregators,
-the amount of state the aggregator tracks
-is increased by the number of partitions.
-This represents an increase in total storage,
-in exchange for reducing the scope
-over which that storage needs to be consistent.
-
-An aggregator could constrain the values
-that are accepted for this extension,
-rejecting reports that lack the extension
-or have disallowed values.
-
-
 # Privacy Budget Consumption {#budget}
 
 The gathering of reports can be modeled
@@ -403,6 +310,99 @@ especially where those entities might be able to choose any task,
 as enabled by the late_binding report extension ({{late-bind}}).
 This parameter ensures that the entity cannot direct reports
 to a task that has an inadequate differential privacy mechanism.
+
+
+
+# Scoping Extensions {#scoping}
+
+The DAP report extensions in this section might be used to either
+constrain the use of reports
+for tasks that are configured with matching values
+or group reports for the purposes of detecting duplicates.
+
+Including additional scoping information can also
+ensure that reports do not get reused
+outside of their intended scope.
+
+This section defines report extensions that carry
+requester identity ({{requester}})
+and report partition ({{partition}}).
+
+
+## Requester (Website) Identity {#requester}
+
+Reports might be requested by
+an entity that operates at lower trust level than
+the entity that assembles the report.
+The entity at the lower trust level
+might not have access to the information necessary
+to generate the report.
+
+The requester_identity report extension
+(codepoint 0xTBD)
+contains an encoding of the entity
+that requested the report be created.
+
+For example, an application could ask the operating system
+to generate a report
+using information that would normally be withheld from it.
+Similarly, a website could ask a web browser to generate a report
+based on otherwise secret information.
+In either case,
+the release of information for report
+is conditional on it only being used
+by a specific aggregation service
+under terms that have been previously established
+with the aggregators.
+Binding the report to the identity of the requester
+ensures that any use of the system can be accounted for
+as coming from that requester.
+
+The specific encoding used in this extension
+will depend on the application.
+This extension therefore contains a sequence of application-defined bytes.
+However, the use of a globally-unique identifier,
+such as an origin ({{?ORIGIN=RFC6454}})
+or serialized site ({{SITE}}),
+reduces the likelihood of name collisions.
+A name collision might either allow two requesters
+that share an aggregator
+to share and reuse each others reports
+(or perhaps to marginally increase the odds
+of having reports spuriously detected duplicates).
+
+
+## Report Partition {#partition}
+
+This extension allows a client to bind a report
+to an application-defined label.
+This allows applications to partition reports
+and have each partition managed separately.
+
+The report_partition report extension
+(codepoint 0xTBD)
+contains an application-defined sequence of bytes.
+
+The use of this report extension allows aggregators
+to partition their state for tracking reports.
+Duplicate reports only need to be tracked
+across a matching partition,
+for detecting duplicates within a task
+or for detecting duplicates across tasks.
+
+The selection of partition values might need
+to be coordinated with aggregators.
+If partitions are used by aggregators,
+the amount of state the aggregator tracks
+is increased by the number of partitions.
+This represents an increase in total storage,
+in exchange for reducing the scope
+over which that storage needs to be consistent.
+
+An aggregator could constrain the values
+that are accepted for this extension,
+rejecting reports that lack the extension
+or have disallowed values.
 
 
 # Task Configuration Extensions {#report-extensions}
