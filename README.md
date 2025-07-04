@@ -1,6 +1,8 @@
-# Distributed Aggregation Protocol (DAP) Extensions for Improved Application of Differential Privacy
+<!-- regenerate: on (set to off if you edit this file) -->
 
-This is the working area for the individual Internet-Draft, "Distributed Aggregation Protocol (DAP) Extensions for Improved Application of Differential Privacy".
+# Distributed Aggregation Protocol (DAP) Report Binding Extensions
+
+This is the working area for the individual Internet-Draft, "Distributed Aggregation Protocol (DAP) Report Binding Extensions".
 
 * [Editor's Copy](https://martinthomson.github.io/dap-dp-ext/#go.draft-thomson-ppm-dap-dp-ext.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-thomson-ppm-dap-dp-ext)
