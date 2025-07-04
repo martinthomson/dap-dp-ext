@@ -83,8 +83,8 @@ Table of Contents
      5.1.  Requester (Website) Identity
      5.2.  Report Partition
    6.  Task Configuration Extensions
-     6.1.  Single Requester Task Extension
-     6.2.  Privacy Budget Task Extension
+     6.1.  Privacy Budget Task Extension
+     6.2.  Single Requester Task Extension
    7.  Security Considerations
    8.  IANA Considerations
    9.  References
@@ -400,31 +400,20 @@ Table of Contents
    task.
 
    enum {
-     single_requester (0xTBD),
      task_budget (0xTBD),
+     single_requester (0xTBD),
      (2^16-1)
    } ExtensionType;
 
    uint16 ReportExtensions<2..2^16-2>;
 
-   Analogues of the requester_identity (Section 5.1) and privacy_budget
-   (Section 4) report extensions are defined.  These task provisioning
-   extensions ensure that reports submitted to the task include the
-   corresponding report extensions and ensure that reports with invalid
-   values are rejected.
+   Task provisioning extensions are defined that govern the use of the
+   privacy_budget (Section 4) and requester_identity (Section 5.1)
+   report extensions.  These task provisioning extensions ensure that
+   reports submitted to the task include the corresponding report
+   extensions and that reports with invalid values are rejected.
 
-6.1.  Single Requester Task Extension
-
-   This single_requester task provisioning extension contains the
-   identity of a requester.  The format of this is identical to the
-   requester_identity report extension; see Section 5.1.
-
-   Use of this extension indicates that all reports submitted to the
-   task MUST include a requester_identity report extension with the
-   specified value.  All reports that omit that extension or contain a
-   different value MUST be rejected.
-
-6.2.  Privacy Budget Task Extension
+6.1.  Privacy Budget Task Extension
 
    The task_budget task provisioning extension contains the minimum
    privacy budget that can be expended on the task.  The value is
@@ -444,6 +433,17 @@ Table of Contents
    Aggregators use the minimum value across all submitted reports to
    determine how much noise is added; setting a minimum budget allows
    that noise to be bounded.
+
+6.2.  Single Requester Task Extension
+
+   This single_requester task provisioning extension contains the
+   identity of a requester.  The format of this is identical to the
+   requester_identity report extension; see Section 5.1.
+
+   Use of this extension indicates that all reports submitted to the
+   task MUST include a requester_identity report extension with the
+   specified value.  All reports that omit that extension or contain a
+   different value MUST be rejected.
 
 7.  Security Considerations
 
@@ -467,11 +467,11 @@ Table of Contents
                +=======+====================+=============+
                | TBD   | late_binding       | Section 3   |
                +-------+--------------------+-------------+
+               | TBD   | privacy_budget     | Section 4   |
+               +-------+--------------------+-------------+
                | TBD   | requester_identity | Section 5.1 |
                +-------+--------------------+-------------+
                | TBD   | partition          | Section 5.2 |
-               +-------+--------------------+-------------+
-               | TBD   | privacy_budget     | Section 4   |
                +-------+--------------------+-------------+
 
                          Table 1: DAP Extensions
@@ -484,9 +484,9 @@ Table of Contents
                 +=======+==================+=============+
                 | Value | Name             | Reference   |
                 +=======+==================+=============+
-                | TBD   | single_requester | Section 6.1 |
+                | TBD   | task_budget      | Section 6.1 |
                 +-------+------------------+-------------+
-                | TBD   | task_budget      | Section 6.2 |
+                | TBD   | single_requester | Section 6.2 |
                 +-------+------------------+-------------+
 
                   Table 2: Task Provisioning Extensions

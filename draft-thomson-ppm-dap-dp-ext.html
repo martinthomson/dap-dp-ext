@@ -1203,10 +1203,10 @@ are maintained.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-task-configuration-extensio" class="internal xref">Task Configuration Extensions</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-single-requester-task-exten" class="internal xref">Single Requester Task Extension</a></p>
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-privacy-budget-task-extensi" class="internal xref">Privacy Budget Task Extension</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-privacy-budget-task-extensi" class="internal xref">Privacy Budget Task Extension</a></p>
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-single-requester-task-exten" class="internal xref">Single Requester Task Extension</a></p>
 </li>
             </ul>
 </li>
@@ -1635,59 +1635,60 @@ can set constraints on the reports that are accepted for a task.<a href="#sectio
 <div class="lang-tls-syntax sourcecode" id="section-6-2">
 <pre>
 enum {
-  single_requester (0xTBD),
   task_budget (0xTBD),
+  single_requester (0xTBD),
   (2^16-1)
 } ExtensionType;
 
 uint16 ReportExtensions&lt;2..2^16-2&gt;;
 </pre><a href="#section-6-2" class="pilcrow">¶</a>
 </div>
-<p id="section-6-3">Analogues of the
-requester_identity (<a href="#requester" class="auto internal xref">Section 5.1</a>) and
-privacy_budget (<a href="#budget" class="auto internal xref">Section 4</a>)
-report extensions are defined.
+<p id="section-6-3">Task provisioning extensions are defined
+that govern the use of the
+privacy_budget (<a href="#budget" class="auto internal xref">Section 4</a>) and
+requester_identity (<a href="#requester" class="auto internal xref">Section 5.1</a>)
+report extensions.
 These task provisioning extensions ensure that reports submitted to the task
 include the corresponding report extensions and
-ensure that reports with invalid values are rejected.<a href="#section-6-3" class="pilcrow">¶</a></p>
-<div id="single-requester">
-<section id="section-6.1">
-        <h3 id="name-single-requester-task-exten">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-single-requester-task-exten" class="section-name selfRef">Single Requester Task Extension</a>
-        </h3>
-<p id="section-6.1-1">This single_requester task provisioning extension contains the identity of a requester.
-The format of this is identical to the requester_identity report extension;
-see <a href="#requester" class="auto internal xref">Section 5.1</a>.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2">Use of this extension indicates that all reports
-submitted to the task <span class="bcp14">MUST</span> include a requester_identity report extension
-with the specified value.
-All reports that omit that extension
-or contain a different value
-<span class="bcp14">MUST</span> be rejected.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
-</section>
-</div>
+that reports with invalid values are rejected.<a href="#section-6-3" class="pilcrow">¶</a></p>
 <div id="task-budget">
-<section id="section-6.2">
+<section id="section-6.1">
         <h3 id="name-privacy-budget-task-extensi">
-<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-privacy-budget-task-extensi" class="section-name selfRef">Privacy Budget Task Extension</a>
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-privacy-budget-task-extensi" class="section-name selfRef">Privacy Budget Task Extension</a>
         </h3>
-<p id="section-6.2-1">The task_budget task provisioning extension contains the minimum privacy budget
+<p id="section-6.1-1">The task_budget task provisioning extension contains the minimum privacy budget
 that can be expended on the task.
 The value is encoded identically to the privacy_budget report extension;
-see <a href="#budget" class="auto internal xref">Section 4</a>.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
-<p id="section-6.2-2">The task_budget task provisioning extension both
+see <a href="#budget" class="auto internal xref">Section 4</a>.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-2">The task_budget task provisioning extension both
 establishes a requirement for reports to include the privacy_budget report extension
 and sets an upper bound on the amount of privacy budget that can be expended.
 Reports that contain no privacy_budget report extension
 or those that contain a privacy_budget report extension value
 smaller than the value in the task_budget extension
-<span class="bcp14">MUST</span> be rejected.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
-<p id="section-6.2-3">The value of this extension can be used
+<span class="bcp14">MUST</span> be rejected.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.1-3">The value of this extension can be used
 to bound the noise that is applied
 by a centrally managed differential privacy mechanism.
 Aggregators use the minimum value
 across all submitted reports to determine how much noise is added;
-setting a minimum budget allows that noise to be bounded.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
+setting a minimum budget allows that noise to be bounded.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="single-requester">
+<section id="section-6.2">
+        <h3 id="name-single-requester-task-exten">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-single-requester-task-exten" class="section-name selfRef">Single Requester Task Extension</a>
+        </h3>
+<p id="section-6.2-1">This single_requester task provisioning extension contains the identity of a requester.
+The format of this is identical to the requester_identity report extension;
+see <a href="#requester" class="auto internal xref">Section 5.1</a>.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.2-2">Use of this extension indicates that all reports
+submitted to the task <span class="bcp14">MUST</span> include a requester_identity report extension
+with the specified value.
+All reports that omit that extension
+or contain a different value
+<span class="bcp14">MUST</span> be rejected.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1741,6 +1742,13 @@ in <a href="#t-dap-ext" class="auto internal xref">Table 1</a>.<a href="#section
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">privacy_budget</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <a href="#budget" class="auto internal xref">Section 4</a>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">requester_identity</td>
             <td class="text-left" rowspan="1" colspan="1">
               <a href="#requester" class="auto internal xref">Section 5.1</a>
@@ -1751,13 +1759,6 @@ in <a href="#t-dap-ext" class="auto internal xref">Table 1</a>.<a href="#section
             <td class="text-left" rowspan="1" colspan="1">partition</td>
             <td class="text-left" rowspan="1" colspan="1">
               <a href="#partition" class="auto internal xref">Section 5.2</a>
-</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">TBD</td>
-            <td class="text-left" rowspan="1" colspan="1">privacy_budget</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#budget" class="auto internal xref">Section 4</a>
 </td>
           </tr>
         </tbody>
@@ -1784,16 +1785,16 @@ in <a href="#t-dap-taskprov-ext" class="auto internal xref">Table 2</a>.<a href=
         <tbody>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
-            <td class="text-left" rowspan="1" colspan="1">single_requester</td>
+            <td class="text-left" rowspan="1" colspan="1">task_budget</td>
             <td class="text-left" rowspan="1" colspan="1">
-              <a href="#single-requester" class="auto internal xref">Section 6.1</a>
+              <a href="#task-budget" class="auto internal xref">Section 6.1</a>
 </td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
-            <td class="text-left" rowspan="1" colspan="1">task_budget</td>
+            <td class="text-left" rowspan="1" colspan="1">single_requester</td>
             <td class="text-left" rowspan="1" colspan="1">
-              <a href="#task-budget" class="auto internal xref">Section 6.2</a>
+              <a href="#single-requester" class="auto internal xref">Section 6.2</a>
 </td>
           </tr>
         </tbody>
