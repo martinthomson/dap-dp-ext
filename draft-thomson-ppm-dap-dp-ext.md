@@ -515,10 +515,12 @@ and the VDAF that is in use ({{Section 9 of VDAF}}.
 
 # IANA Considerations
 
-This document registers extensions in the "Report Extension Identifiers" registry
+This document registers report extensions
+in the "Report Extension Identifiers" registry
 established in {{Section 9.2.2 of DAP}}.
 
-The new registrations are listed in {{t-dap-ext}}.
+New report extension registrations are tabulated
+in {{t-dap-ext}}.
 
 | Value  | Name               | Reference     |
 |:-------|:-------------------|:--------------|
@@ -528,9 +530,12 @@ The new registrations are listed in {{t-dap-ext}}.
 | TBD    | privacy_budget     | {{budget}}    |
 {: #t-dap-ext title="DAP Extensions"}
 
-This document registers the `report_extensions` task provisioning extension
+This document registers task provisioning extensions
 in the "Taskbind Extensions" registry
-established in {{Section 7.2 of !TASKPROV}}:
+established in {{Section 7.2 of !TASKPROV}}.
+
+New task provisioning extensions are tabulated
+in {{t-dap-taskprov-ext}}.
 
 | Value  | Name               | Reference            |
 |:-------|:-------------------|:---------------------|
