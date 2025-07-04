@@ -143,7 +143,8 @@ on the value of those report extensions.
 DAP presently requires that a client be aware of the task that it is contributing to.
 The identity of the task is bound to each report
 through the inclusion of the task ID in the call to the sharding function
-of the VDAF ({{Section 5.1 of ?VDAF=I-D.irtf-cfrg-vdaf}}).
+of the Verifiable Distributed Aggregation Function (VDAF);
+see {{Section 5.1 of ?VDAF=I-D.irtf-cfrg-vdaf}}.
 
 The late_binding report extension
 (codepoint 0xTBD)
@@ -172,16 +173,31 @@ see {{Section 4.5.2 of DAP}}.
 > when passed an ASCII-encoded {{?ASCII=RFC0020}} input of
 > 'no task_id'.
 
-Enforcing anti-replay for a report
-that is not bound to a specific task
-is challenging.
-An aggregator cannot constrain its search for duplicate reports
-to those that were submitted to the task.
-This could greatly increase the cost of meeting anti-replay requirements.
+Removing the binding of reports to tasks
+means that a report might be aggregated across any task
+that permits the use of this extension.
+
+Binding reports to tasks is defense against attacks
+that misdirect reports to unintended reports,
+including those configured with weaker security margins.
+The best defense against this is to ensure
+that all tasks that use this are configured with roughly equivalent parameters.
+Spoiling of results through misdirection
+is safeguarded by the verification
+that is performed at the preparation phase of the VDAF.
+
+Enforcing anti-replay
+for tasks that are configured to accept reports with this extension
+cannot be applied on a per-task scope.
+A single anti-replay state MUST be used
+for all reports that include the late_binding report extension.
+
+This could increase the cost of meeting anti-replay requirements.
 The intent with this extension is that additional constraints,
 such as one or more of the scoping extensions (see {{scoping}}),
 will be used to make it more feasible
 for an aggregator to comply with anti-replay requirements.
+
 
 # Privacy Budget Consumption {#budget}
 
