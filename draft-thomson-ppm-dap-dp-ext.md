@@ -450,38 +450,24 @@ DAP tasks that are created with the DAP task configuration extension
 {{!TASKPROV}}
 can set constraints on the reports that are accepted for a task.
 
-
 ~~~ tls-syntax
 enum {
-  single_requester (0xTBD),
   task_budget (0xTBD),
+  single_requester (0xTBD),
   (2^16-1)
 } ExtensionType;
 
 uint16 ReportExtensions<2..2^16-2>;
 ~~~
 
-Analogues of the
-requester_identity ({{requester}}) and
-privacy_budget ({{budget}})
-report extensions are defined.
+Task provisioning extensions are defined
+that govern the use of the
+privacy_budget ({{budget}}) and
+requester_identity ({{requester}})
+report extensions.
 These task provisioning extensions ensure that reports submitted to the task
 include the corresponding report extensions and
-ensure that reports with invalid values are rejected.
-
-
-## Single Requester Task Extension {#single-requester}
-
-This single_requester task provisioning extension contains the identity of a requester.
-The format of this is identical to the requester_identity report extension;
-see {{requester}}.
-
-Use of this extension indicates that all reports
-submitted to the task MUST include a requester_identity report extension
-with the specified value.
-All reports that omit that extension
-or contain a different value
-MUST be rejected.
+that reports with invalid values are rejected.
 
 
 ## Privacy Budget Task Extension {#task-budget}
@@ -505,6 +491,20 @@ by a centrally managed differential privacy mechanism.
 Aggregators use the minimum value
 across all submitted reports to determine how much noise is added;
 setting a minimum budget allows that noise to be bounded.
+
+
+## Single Requester Task Extension {#single-requester}
+
+This single_requester task provisioning extension contains the identity of a requester.
+The format of this is identical to the requester_identity report extension;
+see {{requester}}.
+
+Use of this extension indicates that all reports
+submitted to the task MUST include a requester_identity report extension
+with the specified value.
+All reports that omit that extension
+or contain a different value
+MUST be rejected.
 
 
 # Security Considerations
@@ -533,9 +533,9 @@ in {{t-dap-ext}}.
 | Value  | Name               | Reference     |
 |:-------|:-------------------|:--------------|
 | TBD    | late_binding       | {{late-bind}} |
+| TBD    | privacy_budget     | {{budget}}    |
 | TBD    | requester_identity | {{requester}} |
 | TBD    | partition          | {{partition}} |
-| TBD    | privacy_budget     | {{budget}}    |
 {: #t-dap-ext title="DAP Extensions"}
 
 This document registers task provisioning extensions
@@ -547,8 +547,8 @@ in {{t-dap-taskprov-ext}}.
 
 | Value  | Name               | Reference            |
 |:-------|:-------------------|:---------------------|
-| TBD    | single_requester   | {{single-requester}} |
 | TBD    | task_budget        | {{task-budget}}      |
+| TBD    | single_requester   | {{single-requester}} |
 {: #t-dap-taskprov-ext title="Task Provisioning Extensions"}
 
 
