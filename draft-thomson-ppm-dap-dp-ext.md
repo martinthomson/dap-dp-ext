@@ -42,13 +42,18 @@ informative:
 
 --- abstract
 
-The Distributed Aggregation Protocol (DAP) can be a key component
-of a system that provides differentially-private guarantees
-for participants.
-Extensions to DAP are defined to support these guarantees.
-This includes bindings of reports to specific options,
-so that the aggregation service can better implement privacy budgeting
-and replay protections.
+Report extensions to the Distributed Aggregation Protocol (DAP)
+are defined to support new modes of operation for the protocol.
+This includes a batched submission mode
+where an intermediary can collect reports
+prior to settling on an exact task configuration.
+It also includes more flexibility for modes
+where a differential privacy mechanism is applied
+as part of the aggregation process.
+Report extensions bind the content of reports to the chosen options
+to ensure that the guarantees
+that both DAP and differential privacy provide
+are maintained.
 
 --- middle
 
