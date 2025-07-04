@@ -1368,16 +1368,23 @@ that all tasks that use this are configured with roughly equivalent parameters.
 Spoiling of results through misdirection
 is safeguarded by the verification
 that is performed at the preparation phase of the VDAF.<a href="#section-3-7" class="pilcrow">¶</a></p>
-<p id="section-3-8">Enforcing anti-replay
+<p id="section-3-8">Misdirecting reports this way can still lead
+to limited spoiling of tasks,
+within the bounds permitted for a single task.
+However, any entity that can perform such redirection
+is potentially able to effect the same outcome
+more effectively
+through entirely falsified reports.<a href="#section-3-8" class="pilcrow">¶</a></p>
+<p id="section-3-9">Enforcing anti-replay
 for tasks that are configured to accept reports with this extension
 cannot be applied on a per-task scope.
 A single anti-replay state <span class="bcp14">MUST</span> be used
-for all reports that include the late_binding report extension.<a href="#section-3-8" class="pilcrow">¶</a></p>
-<p id="section-3-9">This could increase the cost of meeting anti-replay requirements.
+for all reports that include the late_binding report extension.<a href="#section-3-9" class="pilcrow">¶</a></p>
+<p id="section-3-10">This could increase the cost of meeting anti-replay requirements.
 The intent with this extension is that additional constraints,
 such as one or more of the scoping extensions (see <a href="#scoping" class="auto internal xref">Section 5</a>),
 will be used to make it more feasible
-for an aggregator to comply with anti-replay requirements.<a href="#section-3-9" class="pilcrow">¶</a></p>
+for an aggregator to comply with anti-replay requirements.<a href="#section-3-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="budget">
