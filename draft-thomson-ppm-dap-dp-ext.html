@@ -1060,7 +1060,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Thomson</td>
-<td class="center">Expires 5 January 2026</td>
+<td class="center">Expires 11 January 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1073,12 +1073,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-thomson-ppm-dap-dp-ext-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-07-04" class="published">4 July 2025</time>
+<time datetime="2025-07-10" class="published">10 July 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-01-05">5 January 2026</time></dd>
+<dd class="expires"><time datetime="2026-01-11">11 January 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1139,7 +1139,7 @@ are maintained.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1335,7 +1335,9 @@ of the Verifiable Distributed Aggregation Function (VDAF);
 see <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vdaf-15#section-5.1" class="relref">Section 5.1</a> of [<a href="#VDAF" class="cite xref">VDAF</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">The late_binding report extension
 (codepoint 0xTBD)
-signals to aggregators that a report was not bound to a specific task
+is an empty extension.
+The late_binding report extension signals to aggregators
+that a report was not bound to a specific task
 when it was created.<a href="#section-3-2" class="pilcrow">¶</a></p>
 <p id="section-3-3">Late task binding might be useful
 when reports are collected by an intermediary.
@@ -1359,32 +1361,49 @@ when passed an ASCII-encoded <span>[<a href="#ASCII" class="cite xref">ASCII</a>
 </aside>
 <p id="section-3-6">Removing the binding of reports to tasks
 means that a report might be aggregated across any task
-that permits the use of this extension.<a href="#section-3-6" class="pilcrow">¶</a></p>
-<p id="section-3-7">Binding reports to tasks is defense against attacks
-that misdirect reports to unintended reports,
+that permits the use of this extension.
+This carries two risks:<a href="#section-3-6" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-7.1">
+          <p id="section-3-7.1.1">The report might contribute to
+the spoiling of the output of the task
+it is redirected to.<a href="#section-3-7.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-7.2">
+          <p id="section-3-7.2.1">The preparation of the report for the wrong task
+might leak information.<a href="#section-3-7.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-3-8">Binding reports to tasks is defense against attacks
+that misdirect reports to unintended tasks,
 including those configured with weaker security margins.
-The best defense against this is to ensure
-that all tasks that use this are configured with roughly equivalent parameters.
+The best defense against spoiling is to ensure
+that all tasks that use this are configured
+with roughly equivalent security margins.
 Spoiling of results through misdirection
-is safeguarded by the verification
-that is performed at the preparation phase of the VDAF.<a href="#section-3-7" class="pilcrow">¶</a></p>
-<p id="section-3-8">Misdirecting reports this way can still lead
+is then safeguarded by the verification
+that is performed at the preparation phase of the VDAF.<a href="#section-3-8" class="pilcrow">¶</a></p>
+<p id="section-3-9">TODO: We might need to bind encryption/decryption
+to a specific VDAF configuration.
+We could do that using the task ID,
+like in <span>[<a href="#TASKPROV" class="cite xref">TASKPROV</a>]</span>.<a href="#section-3-9" class="pilcrow">¶</a></p>
+<p id="section-3-10">Misdirecting reports this way can still lead
 to limited spoiling of tasks,
 within the bounds permitted for a single task.
 However, any entity that can perform such redirection
 is potentially able to effect the same outcome
 more effectively
-through entirely falsified reports.<a href="#section-3-8" class="pilcrow">¶</a></p>
-<p id="section-3-9">Enforcing anti-replay
+through entirely falsified reports.<a href="#section-3-10" class="pilcrow">¶</a></p>
+<p id="section-3-11">Enforcing anti-replay
 for tasks that are configured to accept reports with this extension
 cannot be applied on a per-task scope.
 A single anti-replay state <span class="bcp14">MUST</span> be used
-for all reports that include the late_binding report extension.<a href="#section-3-9" class="pilcrow">¶</a></p>
-<p id="section-3-10">This could increase the cost of meeting anti-replay requirements.
+for all reports that include the late_binding report extension.<a href="#section-3-11" class="pilcrow">¶</a></p>
+<p id="section-3-12">This could increase the cost of meeting anti-replay requirements.
 The intent with this extension is that additional constraints,
 such as one or more of the scoping extensions (see <a href="#scoping" class="auto internal xref">Section 5</a>),
 will be used to make it more feasible
-for an aggregator to comply with anti-replay requirements.<a href="#section-3-10" class="pilcrow">¶</a></p>
+for an aggregator to comply with anti-replay requirements.<a href="#section-3-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="budget">
@@ -1638,9 +1657,7 @@ enum {
   task_budget (0xTBD),
   single_requester (0xTBD),
   (2^16-1)
-} ExtensionType;
-
-uint16 ReportExtensions&lt;2..2^16-2&gt;;
+} TaskbindExtensionType;
 </pre><a href="#section-6-2" class="pilcrow">¶</a>
 </div>
 <p id="section-6-3">Task provisioning extensions are defined

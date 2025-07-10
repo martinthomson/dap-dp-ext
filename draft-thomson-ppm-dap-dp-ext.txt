@@ -4,8 +4,8 @@
 
 Privacy Preserving Measurement                                M. Thomson
 Internet-Draft                                                   Mozilla
-Intended status: Standards Track                             4 July 2025
-Expires: 5 January 2026
+Intended status: Standards Track                            10 July 2025
+Expires: 11 January 2026
 
 
     Distributed Aggregation Protocol (DAP) Report Binding Extensions
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 January 2026.
+   This Internet-Draft will expire on 11 January 2026.
 
 Copyright Notice
 
@@ -172,9 +172,9 @@ Table of Contents
    function of the Verifiable Distributed Aggregation Function (VDAF);
    see Section 5.1 of [VDAF].
 
-   The late_binding report extension (codepoint 0xTBD) signals to
-   aggregators that a report was not bound to a specific task when it
-   was created.
+   The late_binding report extension (codepoint 0xTBD) is an empty
+   extension.  The late_binding report extension signals to aggregators
+   that a report was not bound to a specific task when it was created.
 
    Late task binding might be useful when reports are collected by an
    intermediary.  The client that generates the report in this case
@@ -194,14 +194,25 @@ Table of Contents
 
    Removing the binding of reports to tasks means that a report might be
    aggregated across any task that permits the use of this extension.
+   This carries two risks:
+
+   *  The report might contribute to the spoiling of the output of the
+      task it is redirected to.
+
+   *  The preparation of the report for the wrong task might leak
+      information.
 
    Binding reports to tasks is defense against attacks that misdirect
-   reports to unintended reports, including those configured with weaker
-   security margins.  The best defense against this is to ensure that
-   all tasks that use this are configured with roughly equivalent
-   parameters.  Spoiling of results through misdirection is safeguarded
-   by the verification that is performed at the preparation phase of the
-   VDAF.
+   reports to unintended tasks, including those configured with weaker
+   security margins.  The best defense against spoiling is to ensure
+   that all tasks that use this are configured with roughly equivalent
+   security margins.  Spoiling of results through misdirection is then
+   safeguarded by the verification that is performed at the preparation
+   phase of the VDAF.
+
+   TODO: We might need to bind encryption/decryption to a specific VDAF
+   configuration.  We could do that using the task ID, like in
+   [TASKPROV].
 
    Misdirecting reports this way can still lead to limited spoiling of
    tasks, within the bounds permitted for a single task.  However, any
@@ -403,9 +414,7 @@ Table of Contents
      task_budget (0xTBD),
      single_requester (0xTBD),
      (2^16-1)
-   } ExtensionType;
-
-   uint16 ReportExtensions<2..2^16-2>;
+   } TaskbindExtensionType;
 
    Task provisioning extensions are defined that govern the use of the
    privacy_budget (Section 4) and requester_identity (Section 5.1)
