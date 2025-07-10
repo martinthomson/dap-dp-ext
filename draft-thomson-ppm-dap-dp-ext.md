@@ -470,7 +470,7 @@ enum {
   task_budget (0xTBD),
   single_requester (0xTBD),
   (2^16-1)
-} TaskbindExtensionType;
+} TaskprovExtensionType;
 ~~~
 
 Task provisioning extensions are defined
