@@ -148,7 +148,9 @@ see {{Section 5.1 of ?VDAF=I-D.irtf-cfrg-vdaf}}.
 
 The late_binding report extension
 (codepoint 0xTBD)
-signals to aggregators that a report was not bound to a specific task
+is an empty extension.
+The late_binding report extension signals to aggregators
+that a report was not bound to a specific task
 when it was created.
 
 Late task binding might be useful
@@ -176,15 +178,28 @@ see {{Section 4.5.2 of DAP}}.
 Removing the binding of reports to tasks
 means that a report might be aggregated across any task
 that permits the use of this extension.
+This carries two risks:
+
+* The report might contribute to
+  the spoiling of the output of the task
+  it is redirected to.
+* The preparation of the report for the wrong task
+  might leak information.
 
 Binding reports to tasks is defense against attacks
-that misdirect reports to unintended reports,
+that misdirect reports to unintended tasks,
 including those configured with weaker security margins.
-The best defense against this is to ensure
-that all tasks that use this are configured with roughly equivalent parameters.
+The best defense against spoiling is to ensure
+that all tasks that use this are configured
+with roughly equivalent security margins.
 Spoiling of results through misdirection
-is safeguarded by the verification
+is then safeguarded by the verification
 that is performed at the preparation phase of the VDAF.
+
+TODO: We might need to bind encryption/decryption
+to a specific VDAF configuration.
+We could do that using the task ID,
+like in {{TASKPROV}}.
 
 Misdirecting reports this way can still lead
 to limited spoiling of tasks,
@@ -455,9 +470,7 @@ enum {
   task_budget (0xTBD),
   single_requester (0xTBD),
   (2^16-1)
-} ExtensionType;
-
-uint16 ReportExtensions<2..2^16-2>;
+} TaskbindExtensionType;
 ~~~
 
 Task provisioning extensions are defined
