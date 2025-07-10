@@ -414,7 +414,7 @@ Table of Contents
      task_budget (0xTBD),
      single_requester (0xTBD),
      (2^16-1)
-   } TaskbindExtensionType;
+   } TaskprovExtensionType;
 
    Task provisioning extensions are defined that govern the use of the
    privacy_budget (Section 4) and requester_identity (Section 5.1)
