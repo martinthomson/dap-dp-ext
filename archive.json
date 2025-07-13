@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-10T01:47:54.364477+00:00",
+  "timestamp": "2025-07-13T01:58:44.549612+00:00",
   "repo": "martinthomson/dap-dp-ext",
   "labels": [
     {
@@ -244,6 +244,85 @@
       "createdAt": "2025-05-15T21:22:51Z",
       "updatedAt": "2025-05-16T02:34:12Z",
       "closedAt": "2025-05-16T02:34:12Z",
+      "comments": []
+    },
+    {
+      "number": 9,
+      "id": "I_kwDONA6MD86_yVux",
+      "title": "Maybe just call the requester/intermediary a collector",
+      "url": "https://github.com/martinthomson/dap-dp-ext/issues/9",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Though these are maybe logically separate roles, I can't imagine a case where they aren't the same entity.  We could maybe note that this doesn't *have* to be the collector that does this, but combining the roles is the most obvious thing to do.",
+      "createdAt": "2025-07-10T02:15:41Z",
+      "updatedAt": "2025-07-10T02:15:41Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 10,
+      "id": "I_kwDONA6MD86_yWMJ",
+      "title": "Rename to privacy_budget_epsilon",
+      "url": "https://github.com/martinthomson/dap-dp-ext/issues/10",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "This metric has to be for a specific metric, otherwise its application to other metrics might lead to confusion and completely incorrect noise application.\n\nWhile we're at it, let's suggest that other metrics can have their own extension.",
+      "createdAt": "2025-07-10T02:17:03Z",
+      "updatedAt": "2025-07-10T02:17:03Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 11,
+      "id": "I_kwDONA6MD86_yXwP",
+      "title": "Bake VDAF configuration into the task ID",
+      "url": "https://github.com/martinthomson/dap-dp-ext/issues/11",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "With late binding, there is a risk that misdirection to the wrong task could hit a VDAF that leaks unwanted information about a measurement.\n\nI mean, this seems highly unlikely, because the proofs are constructed in a way that should prevent leakage of anything other than the point of the proof, but there's no harm in being safe.\n\nThe idea is to use the encoding from taskprov, then SHA-256, to produce the task ID.\n\nCredit @cjpatton for the idea.",
+      "createdAt": "2025-07-10T02:21:17Z",
+      "updatedAt": "2025-07-10T12:28:06Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "OWNER",
+          "body": "An alternative - and one that maybe we should consider - is to change DAP to bake the VDAF configuration into the AAD.  Then the task ID is less load bearing and we can avoid any such games.",
+          "createdAt": "2025-07-10T02:30:20Z",
+          "updatedAt": "2025-07-10T02:30:20Z"
+        },
+        {
+          "author": "cjpatton",
+          "authorAssociation": "NONE",
+          "body": "Both would work, but the first seems more viable. There were objections in the early days of DAP to specifying an encoding of the task parameters, including the VDAF.",
+          "createdAt": "2025-07-10T12:28:06Z",
+          "updatedAt": "2025-07-10T12:28:06Z"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "I_kwDONA6MD87APx-h",
+      "title": "Add an appendix describing Attribution API use of these",
+      "url": "https://github.com/martinthomson/dap-dp-ext/issues/12",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "This can be short, but it might help contextualize the extensions.",
+      "createdAt": "2025-07-12T13:29:25Z",
+      "updatedAt": "2025-07-12T13:29:25Z",
+      "closedAt": null,
       "comments": []
     }
   ],
