@@ -557,10 +557,12 @@ on the noise that might be added.
 Aggregators can use this extension
 in one of two ways:
 
-* The value in the collection job extension
+* As an optimization and safeguard.
+  The value in the collection job extension
   directly determines the magnitude of the noise that is added
   to the aggregate.
-* The value is only used to filter reports
+* As a safeguard alone.
+  The value is only used to filter reports
   and the minimum value of the privacy budget report extension
   across all accepted reports determines the magnitude of added noise.
 
@@ -582,7 +584,7 @@ to a single Collector.
 
 This extension does not specify how to encode the identity of the Collector.
 Different uses of DAP can choose an encoding
-that best suits the situation.
+that best suits the needs of the application.
 
 The Attribution API has its own understanding
 of how to encode the identity of the Collector.
@@ -619,7 +621,8 @@ provides the necessary authorization for the included key.
 
 The Attribution API does not define a process
 for authorizing a Collector HPKE configuration
-based on the encoded Collector identity.
+based on the encoded Collector identity,
+leaving this to implementations.
 
 
 # Budget Source Task Extension {#budget-source}
@@ -706,8 +709,8 @@ in {{t-dap-collect-ext}}.
 # Acknowledgments
 {:numbered="false"}
 
-Roxana Geambesu noted that a binding to site identity ({{collector-id}})
+{{{Roxana Geambesu}}} noted that a binding to site identity ({{collector-id}})
 was an important component of a robust differential privacy system design
 for the Attribution API.
-David Cook provided useful feedback about the design and document.
-Chris Patton provided helpful input on how to integrate with the DAP architecture.
+{{{David Cook}}} provided useful feedback about the design and document.
+{{{Chris Patton}}} provided helpful input on how to integrate with the DAP architecture.
