@@ -122,7 +122,7 @@ such that they can only be used by the Attribution API.
 Other applications might be able to use them,
 but any effort to make them fully generic
 stops short of making the extensions more complex
-that is required for Attribution.
+than is required for Attribution.
 
 For example, privacy budget extensions are defined
 to use the epsilon definition
