@@ -489,11 +489,12 @@ see {{Sections 15.5.5 and 10.2.3 of ?HTTP=RFC9110}}.
 
 {:aside}
 > Where a collection job already exists,
-> the high entropy collection job ID in the URL
+> an high entropy and unpredictable collection job ID in the URL
 > could make it unnecessary to require authentication of upload requests
 > for this batch mode; see {{CAP-URL}}.
 > This is not the case if reports are accepted
-> without confirming the existence of the identified collection job.
+> without confirming the existence of the identified collection job
+> or the collection job ID is more easily guessed.
 
 A Leader MUST reject attempts
 to upload reports to the regular report upload resource
