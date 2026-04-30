@@ -273,11 +273,11 @@ This extension fixes the entity can request collection of reports.
 
 In the Attribution API,
 the Collector is either a "conversion site",
-or an "internediary site"; see {{ATTR}}.
+or an "intermediary site"; see {{ATTR}}.
 The conversion site is the top-level site where reports are generated.
 An intermediary site is any entity that operates
 independently from the top-level site,
-and it includes the providers of resources (such as images or other content)
+and it includes the providers of secondary resources (such as images)
 and framed content (that is, HTML iframes).
 
 The budget source task extension ({{budget-source}})
@@ -285,7 +285,9 @@ binds the identity of the context that provides privacy budget
 to tasks.
 This extension ensures that reports
 that draw from different privacy budgets
-cannot be aggregated together.
+cannot be aggregated together
+without the allowances necessary to maintain differential privacy
+(most likely, the addition of more noise).
 
 For the Attribution API,
 each "conversion site" receives their own source of privacy budget.
