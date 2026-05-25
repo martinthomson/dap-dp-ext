@@ -625,9 +625,9 @@ based on the encoded Collector identity,
 leaving this to implementations.
 
 
-# Budget Source Task Extension {#budget-source}
+# Privacy Budget Source Task Extension {#budget-source}
 
-The budget source task extension (see {{Section 4.2.2 of DAP}}),
+The privacy budget source task extension (see {{Section 4.2.2 of DAP}}),
 codepoint 0xTBD,
 binds a task --
 and all reports submitted to that task --
@@ -636,6 +636,19 @@ to a single source of privacy budget.
 This extension does not specify how to encode the identity of this entity.
 Different uses of DAP can choose an encoding
 that best suits the needs of the differentially private usage.
+
+Any usage of this design needs to ensure that different sources of privacy budget
+have different unique values that are encoded into this extension.
+This binding ensures that reports that are attributed to different budgets
+cannot be aggregated together,
+which would violate differential privacy goals.
+
+{:aside}
+> In theory, the need for this sort of task diversification
+> could be fulfilled by the `task_info` parameter
+> in the task configuration encoding.
+> However, a separate task extension ensures that `task_info`
+> remains available for other uses.
 
 The Attribution API has its own understanding
 of how to encode the identity of the budget source.
