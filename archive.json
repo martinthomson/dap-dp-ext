@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-05-24T03:44:11.949569+00:00",
+  "timestamp": "2026-05-26T03:41:01.546507+00:00",
   "repo": "martinthomson/dap-attribution",
   "labels": [
     {
@@ -326,5 +326,32 @@
       "comments": []
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 13,
+      "id": "PR_kwDONA6MD87e8sBi",
+      "title": "Explain the budget source extension better",
+      "url": "https://github.com/martinthomson/dap-attribution/pull/13",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "The explanation was a bit thin.  Beef it up.",
+      "createdAt": "2026-05-25T07:31:16Z",
+      "updatedAt": "2026-05-25T07:31:16Z",
+      "baseRepository": "martinthomson/dap-attribution",
+      "baseRefName": "main",
+      "baseRefOid": "3862160546094fcf48390d929acbc48553208abe",
+      "headRepository": "martinthomson/dap-attribution",
+      "headRefName": "timg-budget-source",
+      "headRefOid": "2e645f8f37b4f0adc15444bea7b1013ff8431708",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
 }
