@@ -3,7 +3,7 @@ title: "Distributed Aggregation Protocol (DAP) Extensions for the Attribution AP
 abbrev: "DAP Extensions for Attribution"
 category: std
 
-docname: draft-thomson-ppm-dap-attribution-latest
+docname: draft-ietf-ppm-dap-attribution-latest
 submissiontype: IETF
 number:
 date:
@@ -104,7 +104,7 @@ and the operating modes that the Attribution API depends on.
 
 The Attribution API {{ATTR}} is a web platform feature
 that provides sites that use advertising
-with the ability to measure the effectiveness of that advertising.
+with tools that measure cross-site interactions with advertising.
 Measurements that the API produce are aggregated
 using the Distributed Aggregation Protocol (DAP) {{!DAP=I-D.ietf-ppm-dap}}.
 
@@ -166,7 +166,7 @@ The Attribution API is expected to operate in a mode
 that differs somewhat from the way that DAP is architected.
 Several extensions are defined to support this operating mode.
 
-In DAP, a task is a long-running context
+In core DAP, a task is a long-running context
 that Clients continuously contribute to.
 Reports are directly uploaded by Clients to the Leader
 as they are generated.
@@ -174,7 +174,7 @@ The DAP batch mode determines how reports are grouped for aggregation.
 A new collection job is initiated by the Collector
 when an aggregate is needed,
 though this might fail if the requirements for the task --
-the batch mode and minimum batch size, primary --
+the batch mode and minimum batch size, primarily --
 are not met.
 
 A simple representation of the DAP architecture
@@ -207,6 +207,8 @@ chooses which reports to aggregate.
 This gives the site an opportunity to review the circumstances
 in which reports were generated
 and filter reports according to their needs.
+For example, it might remove reports that show signs
+of fraudlent behavior.
 
 A secondary reason for Clients to deliver reports to the website,
 rather than submit them directly to the Leader,
@@ -263,7 +265,12 @@ that is added to an aggregate.
 Without this extension,
 noise could be determined from the privacy budget values
 bound to each report.
-This ensures that reports that do not match expectations
+Reports with lower than expected budget allocations,
+when included in aggregates,
+would result in a need for higher noise.
+
+Setting an explicit minimum on the privacy budget
+ensures that reports that do not match expectations
 can be dropped efficiently,
 rather than having Aggregators add unexpectedly large amounts of noise.
 
@@ -619,6 +626,9 @@ retrieving an HPKE configuration from that URL
 that are referenced from the response)
 provides the necessary authorization for the included key.
 
+Alternatively, Aggregators could use an account system
+to associated HPKE configuration with a Collector.
+
 The Attribution API does not define a process
 for authorizing a Collector HPKE configuration
 based on the encoded Collector identity,
@@ -632,6 +642,13 @@ codepoint 0xTBD,
 binds a task --
 and all reports submitted to that task --
 to a single source of privacy budget.
+
+Without this extension,
+reports from different budgets sources
+could be aggregated together.
+Where the expectation is that each source receives an independent budget,
+combining aggregates under a single quantity of noise
+would not achieve differential privacy at the intended level.
 
 This extension does not specify how to encode the identity of this entity.
 Different uses of DAP can choose an encoding
