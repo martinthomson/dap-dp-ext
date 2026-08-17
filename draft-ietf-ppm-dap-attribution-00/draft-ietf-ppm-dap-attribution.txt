@@ -4,13 +4,13 @@
 
 Privacy Preserving Measurement                                M. Thomson
 Internet-Draft                                                   Mozilla
-Intended status: Standards Track                        18 February 2026
-Expires: 22 August 2026
+Intended status: Standards Track                          17 August 2026
+Expires: 18 February 2027
 
 
  Distributed Aggregation Protocol (DAP) Extensions for the Attribution
                                   API
-                draft-thomson-ppm-dap-attribution-latest
+                 draft-ietf-ppm-dap-attribution-latest
 
 Abstract
 
@@ -26,7 +26,7 @@ About This Document
    The latest revision of this draft can be found at
    https://martinthomson.github.io/dap-attribution/draft-thomson-ppm-
    dap-attribution.html.  Status information for this document may be
-   found at https://datatracker.ietf.org/doc/draft-thomson-ppm-dap-
+   found at https://datatracker.ietf.org/doc/draft-ietf-ppm-dap-
    attribution/.
 
    Discussion of this document takes place on the Privacy Preserving
@@ -52,7 +52,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 August 2026.
+   This Internet-Draft will expire on 18 February 2027.
 
 Copyright Notice
 
@@ -97,10 +97,9 @@ Table of Contents
 1.  Introduction
 
    The Attribution API [ATTR] is a web platform feature that provides
-   sites that use advertising with the ability to measure the
-   effectiveness of that advertising.  Measurements that the API produce
-   are aggregated using the Distributed Aggregation Protocol (DAP)
-   [DAP].
+   sites that use advertising with tools that measure cross-site
+   interactions with advertising.  Measurements that the API produce are
+   aggregated using the Distributed Aggregation Protocol (DAP) [DAP].
 
    This document defines extensions to DAP that support the use of DAP
    by the Attribution API.  These extensions fall into two categories:
@@ -114,7 +113,7 @@ Table of Contents
    These extensions are not narrowly defined such that they can only be
    used by the Attribution API.  Other applications might be able to use
    them, but any effort to make them fully generic stops short of making
-   the extensions more complex that is required for Attribution.
+   the extensions more complex than is required for Attribution.
 
    For example, privacy budget extensions are defined to use the epsilon
    definition from (ε, 0)-differential privacy or (ε, δ)-differential
@@ -149,13 +148,13 @@ Table of Contents
    somewhat from the way that DAP is architected.  Several extensions
    are defined to support this operating mode.
 
-   In DAP, a task is a long-running context that Clients continuously
-   contribute to.  Reports are directly uploaded by Clients to the
-   Leader as they are generated.  The DAP batch mode determines how
-   reports are grouped for aggregation.  A new collection job is
+   In core DAP, a task is a long-running context that Clients
+   continuously contribute to.  Reports are directly uploaded by Clients
+   to the Leader as they are generated.  The DAP batch mode determines
+   how reports are grouped for aggregation.  A new collection job is
    initiated by the Collector when an aggregate is needed, though this
    might fail if the requirements for the task -- the batch mode and
-   minimum batch size, primary -- are not met.
+   minimum batch size, primarily -- are not met.
 
    A simple representation of the DAP architecture is illustrated in
    Figure 1.
@@ -182,7 +181,8 @@ Table of Contents
    An important feature of this design is that the website (as a DAP
    Collector) chooses which reports to aggregate.  This gives the site
    an opportunity to review the circumstances in which reports were
-   generated and filter reports according to their needs.
+   generated and filter reports according to their needs.  For example,
+   it might remove reports that show signs of fraudlent behavior.
 
    A secondary reason for Clients to deliver reports to the website,
    rather than submit them directly to the Leader, is that this removes
@@ -226,25 +226,31 @@ Table of Contents
    For the Attribution API, setting a minimum privacy budget is roughly
    equivalent to capping the noise that is added to an aggregate.
    Without this extension, noise could be determined from the privacy
-   budget values bound to each report.  This ensures that reports that
-   do not match expectations can be dropped efficiently, rather than
-   having Aggregators add unexpectedly large amounts of noise.
+   budget values bound to each report.  Reports with lower than expected
+   budget allocations, when included in aggregates, would result in a
+   need for higher noise.
+
+   Setting an explicit minimum on the privacy budget ensures that
+   reports that do not match expectations can be dropped efficiently,
+   rather than having Aggregators add unexpectedly large amounts of
+   noise.
 
    The collector identity task extension (Section 6) binds the identity
    of the Collector to tasks.  This extension fixes the entity can
    request collection of reports.
 
    In the Attribution API, the Collector is either a "conversion site",
-   or an "internediary site"; see [ATTR].  The conversion site is the
+   or an "intermediary site"; see [ATTR].  The conversion site is the
    top-level site where reports are generated.  An intermediary site is
    any entity that operates independently from the top-level site, and
-   it includes the providers of resources (such as images or other
-   content) and framed content (that is, HTML iframes).
+   it includes the providers of secondary resources (such as images) and
+   framed content (that is, HTML iframes).
 
    The budget source task extension (Section 7) binds the identity of
    the context that provides privacy budget to tasks.  This extension
    ensures that reports that draw from different privacy budgets cannot
-   be aggregated together.
+   be aggregated together without the allowances necessary to maintain
+   differential privacy (most likely, the addition of more noise).
 
    For the Attribution API, each "conversion site" receives their own
    source of privacy budget.  Binding tasks to their identity ensures
@@ -402,12 +408,13 @@ Table of Contents
    a 404 status code and the Retry-After response field; see Sections
    15.5.5 and 10.2.3 of [HTTP].
 
-      |  Where a collection job already exists, the high entropy
-      |  collection job ID in the URL could make it unnecessary to
-      |  require authentication of upload requests for this batch mode;
-      |  see [CAP-URL].  This is not the case if reports are accepted
-      |  without confirming the existence of the identified collection
-      |  job.
+      |  Where a collection job already exists, an high entropy and
+      |  unpredictable collection job ID in the URL could make it
+      |  unnecessary to require authentication of upload requests for
+      |  this batch mode; see [CAP-URL].  This is not the case if
+      |  reports are accepted without confirming the existence of the
+      |  identified collection job or the collection job ID is more
+      |  easily guessed.
 
    A Leader MUST reject attempts to upload reports to the regular report
    upload resource (as defined in Section 4.5.2 of [DAP]) when the
@@ -457,12 +464,14 @@ Table of Contents
 
    Aggregators can use this extension in one of two ways:
 
-   *  The value in the collection job extension directly determines the
-      magnitude of the noise that is added to the aggregate.
+   *  As an optimization and safeguard.  The value in the collection job
+      extension directly determines the magnitude of the noise that is
+      added to the aggregate.
 
-   *  The value is only used to filter reports and the minimum value of
-      the privacy budget report extension across all accepted reports
-      determines the magnitude of added noise.
+   *  As a safeguard alone.  The value is only used to filter reports
+      and the minimum value of the privacy budget report extension
+      across all accepted reports determines the magnitude of added
+      noise.
 
    Either approach maintains differential privacy guarantees.  The
    latter can result in adding less noise in the case that the Collector
@@ -478,7 +487,7 @@ Table of Contents
 
    This extension does not specify how to encode the identity of the
    Collector.  Different uses of DAP can choose an encoding that best
-   suits the situation.
+   suits the needs of the application.
 
    The Attribution API has its own understanding of how to encode the
    identity of the Collector.  The value is a UTF-8-encoded string of
@@ -507,14 +516,24 @@ Table of Contents
    the response) provides the necessary authorization for the included
    key.
 
+   Alternatively, Aggregators could use an account system to associated
+   HPKE configuration with a Collector.
+
    The Attribution API does not define a process for authorizing a
-   Collector HPKE configuration based on the encoded Collector identity.
+   Collector HPKE configuration based on the encoded Collector identity,
+   leaving this to implementations.
 
 7.  Budget Source Task Extension
 
    The budget source task extension (see Section 4.2.2 of [DAP]),
    codepoint 0xTBD, binds a task -- and all reports submitted to that
    task -- to a single source of privacy budget.
+
+   Without this extension, reports from different budgets sources could
+   be aggregated together.  Where the expectation is that each source
+   receives an independent budget, combining aggregates under a single
+   quantity of noise would not achieve differential privacy at the
+   intended level.
 
    This extension does not specify how to encode the identity of this
    entity.  Different uses of DAP can choose an encoding that best suits
@@ -596,9 +615,9 @@ Table of Contents
    [DAP]      Geoghegan, T., Patton, C., Pitman, B., Rescorla, E., and
               C. A. Wood, "Distributed Aggregation Protocol for Privacy
               Preserving Measurement", Work in Progress, Internet-Draft,
-              draft-ietf-ppm-dap-17, 30 January 2026,
+              draft-ietf-ppm-dap-19, 6 July 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-
-              17>.
+              19>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -611,9 +630,9 @@ Table of Contents
 
    [VDAF]     Barnes, R., Cook, D., Patton, C., and P. Schoppmann,
               "Verifiable Distributed Aggregation Functions", Work in
-              Progress, Internet-Draft, draft-irtf-cfrg-vdaf-18, 30
-              January 2026, <https://datatracker.ietf.org/doc/html/
-              draft-irtf-cfrg-vdaf-18>.
+              Progress, Internet-Draft, draft-irtf-cfrg-vdaf-22, 14
+              August 2026, <https://datatracker.ietf.org/doc/html/draft-
+              irtf-cfrg-vdaf-22>.
 
 10.2.  Informative References
 
